@@ -453,410 +453,845 @@
 
   <script>
 
-    let selectedElement = null;
+  <script>
+let selectedElement = null;
 
-    let history = [];
-    let historyPosition = -1;
+let history = [];
+let historyPosition = -1;
+
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let elementStartX = 0;
+let elementStartY = 0;
 
 
-    function selectElement(element) {
+// =====================================
+// SELECT
+// =====================================
 
-      if (selectedElement) {
-        selectedElement.classList.remove("selected");
-      }
+function selectElement(element) {
 
-      selectedElement = element;
+  if (selectedElement) {
+    selectedElement.classList.remove("selected");
+  }
 
-      selectedElement.classList.add("selected");
+  selectedElement = element;
 
-      showProperties(element);
+  element.classList.add("selected");
+
+  showProperties(element);
+}
+
+
+// =====================================
+// PROPERTIES
+// =====================================
+
+function showProperties(element) {
+
+  const panel =
+    document.getElementById("propertyPanel");
+
+  const style =
+    window.getComputedStyle(element);
+
+  const fontSize =
+    parseInt(style.fontSize) || 20;
+
+  panel.innerHTML = `
+
+    <div class="property-group">
+
+      <label class="property-label">
+        Text
+      </label>
+
+      <input
+        class="property-input"
+        type="text"
+        value="${escapeHtml(element.innerText || "")}"
+        oninput="updateText(this.value)"
+      >
+
+    </div>
+
+
+    <div class="property-group">
+
+      <label class="property-label">
+        Font Size
+      </label>
+
+      <input
+        class="property-input"
+        type="number"
+        min="8"
+        max="200"
+        value="${fontSize}"
+        oninput="updateFontSize(this.value)"
+      >
+
+    </div>
+
+
+    <div class="property-group">
+
+      <label class="property-label">
+        Text Colour
+      </label>
+
+      <input
+        class="color-input"
+        type="color"
+        value="${rgbToHex(style.color)}"
+        onchange="updateTextColor(this.value)"
+      >
+
+    </div>
+
+
+    <div class="property-group">
+
+      <button
+        class="tool-button"
+        onclick="duplicateElement()"
+      >
+        📋 Duplicate
+      </button>
+
+      <button
+        class="tool-button"
+        onclick="deleteElement()"
+      >
+        🗑 Delete
+      </button>
+
+    </div>
+
+  `;
+}
+
+
+// =====================================
+// TEXT
+// =====================================
+
+function updateText(value) {
+
+  if (!selectedElement) return;
+
+  selectedElement.innerText = value;
+
+}
+
+
+// =====================================
+// FONT SIZE
+// =====================================
+
+function updateFontSize(value) {
+
+  if (!selectedElement) return;
+
+  selectedElement.style.fontSize =
+    value + "px";
+
+}
+
+
+// =====================================
+// TEXT COLOUR
+// =====================================
+
+function updateTextColor(value) {
+
+  if (!selectedElement) return;
+
+  selectedElement.style.color =
+    value;
+
+}
+
+
+// =====================================
+// ADD TEXT
+// =====================================
+
+function addText() {
+
+  const canvas =
+    document.getElementById("designCanvas");
+
+  const text =
+    document.createElement("div");
+
+  text.innerText =
+    "New Text";
+
+  text.style.position =
+    "absolute";
+
+  text.style.left =
+    "250px";
+
+  text.style.top =
+    "250px";
+
+  text.style.fontSize =
+    "28px";
+
+  text.style.fontFamily =
+    '"DM Sans", sans-serif';
+
+  text.style.cursor =
+    "move";
+
+  text.style.userSelect =
+    "none";
+
+  canvas.appendChild(text);
+
+  makeEditable(text);
+
+  selectElement(text);
+
+  saveHistory();
+}
+
+
+// =====================================
+// ADD SHAPE
+// =====================================
+
+function addShape() {
+
+  const canvas =
+    document.getElementById("designCanvas");
+
+  const shape =
+    document.createElement("div");
+
+  shape.style.position =
+    "absolute";
+
+  shape.style.left =
+    "300px";
+
+  shape.style.top =
+    "300px";
+
+  shape.style.width =
+    "100px";
+
+  shape.style.height =
+    "100px";
+
+  shape.style.background =
+    "#b78cff";
+
+  shape.style.borderRadius =
+    "20px";
+
+  shape.style.cursor =
+    "move";
+
+  canvas.appendChild(shape);
+
+  makeEditable(shape);
+
+  selectElement(shape);
+
+  saveHistory();
+}
+
+
+// =====================================
+// MAKE ELEMENT EDITABLE
+// =====================================
+
+function makeEditable(element) {
+
+  element.addEventListener(
+    "pointerdown",
+    startDrag
+  );
+
+  element.addEventListener(
+    "click",
+    function(event) {
+
+      event.stopPropagation();
+
+      selectElement(element);
 
     }
+  );
+}
 
 
-    function showProperties(element) {
+// =====================================
+// START DRAG
+// =====================================
 
-      const panel = document.getElementById("propertyPanel");
+function startDrag(event) {
 
-      const currentColor =
-        getComputedStyle(element).color || "#151515";
+  event.preventDefault();
 
-      panel.innerHTML = `
+  const element =
+    event.currentTarget;
 
-        <div class="property-group">
+  selectElement(element);
 
-          <label class="property-label">
-            Text
-          </label>
+  isDragging = true;
 
-          <input
-            class="property-input"
-            type="text"
-            value="${element.innerText || ""}"
-            oninput="updateText(this.value)"
-          >
+  dragStartX =
+    event.clientX;
 
-        </div>
+  dragStartY =
+    event.clientY;
 
+  elementStartX =
+    parseFloat(element.style.left) || 0;
 
-        <div class="property-group">
+  elementStartY =
+    parseFloat(element.style.top) || 0;
 
-          <label class="property-label">
-            Font Size
-          </label>
+  element.setPointerCapture(
+    event.pointerId
+  );
 
-          <input
-            class="property-input"
-            type="number"
-            value="${parseInt(getComputedStyle(element).fontSize)}"
-            oninput="updateFontSize(this.value)"
-          >
+  element._dragMove =
+    function(moveEvent) {
 
-        </div>
-
-
-        <div class="property-group">
-
-          <label class="property-label">
-            Text Colour
-          </label>
-
-          <div class="color-row">
-
-            <input
-              class="color-input"
-              type="color"
-              value="${rgbToHex(currentColor)}"
-              onchange="updateTextColor(this.value)"
-            >
-
-          </div>
-
-        </div>
-
-      `;
-    }
-
-
-    function updateText(value) {
-
-      if (!selectedElement) return;
-
-      selectedElement.innerText = value;
-
-      saveHistory();
-
-    }
-
-
-    function updateFontSize(value) {
-
-      if (!selectedElement) return;
-
-      selectedElement.style.fontSize = value + "px";
-
-      saveHistory();
-
-    }
-
-
-    function updateTextColor(value) {
-
-      if (!selectedElement) return;
-
-      selectedElement.style.color = value;
-
-      saveHistory();
-
-    }
-
-
-    function addText() {
-
-      const canvas = document.getElementById("designCanvas");
-
-      const text = document.createElement("div");
-
-      text.innerText = "New Text";
-
-      text.style.position = "absolute";
-      text.style.left = "250px";
-      text.style.top = "250px";
-      text.style.fontSize = "28px";
-      text.style.fontFamily = '"DM Sans", sans-serif';
-      text.style.cursor = "move";
-      text.style.userSelect = "none";
-
-      text.onclick = function() {
-        selectElement(this);
-      };
-
-      canvas.appendChild(text);
-
-      selectElement(text);
-
-      saveHistory();
-
-    }
-
-
-    function addShape() {
-
-      const canvas = document.getElementById("designCanvas");
-
-      const shape = document.createElement("div");
-
-      shape.style.position = "absolute";
-      shape.style.left = "300px";
-      shape.style.top = "300px";
-      shape.style.width = "100px";
-      shape.style.height = "100px";
-      shape.style.background = "#b78cff";
-      shape.style.borderRadius = "20px";
-      shape.style.cursor = "move";
-
-      shape.onclick = function() {
-        selectElement(this);
-      };
-
-      canvas.appendChild(shape);
-
-      selectElement(shape);
-
-      saveHistory();
-
-    }
-
-
-    function changeBackground() {
-
-      const colour = prompt(
-        "Enter a background colour:",
-        "#ffffff"
+      dragElement(
+        moveEvent,
+        element
       );
 
-      if (!colour) return;
+    };
 
-      document.getElementById(
-        "designCanvas"
-      ).style.background = colour;
+  element._dragEnd =
+    function(upEvent) {
 
-      saveHistory();
-
-    }
-
-
-    function saveDesign() {
-
-      const canvas =
-        document.getElementById("designCanvas");
-
-      localStorage.setItem(
-        "creativeTemplatezDesign",
-        canvas.innerHTML
+      stopDrag(
+        upEvent,
+        element
       );
 
-      alert("Design saved!");
+    };
 
-    }
+  element.addEventListener(
+    "pointermove",
+    element._dragMove
+  );
 
-
-    function saveHistory() {
-
-      const canvas =
-        document.getElementById("designCanvas");
-
-      history =
-        history.slice(0, historyPosition + 1);
-
-      history.push(canvas.innerHTML);
-
-      historyPosition++;
-
-    }
+  element.addEventListener(
+    "pointerup",
+    element._dragEnd
+  );
+}
 
 
-    function undoAction() {
+// =====================================
+// DRAG
+// =====================================
 
-      if (historyPosition <= 0) return;
+function dragElement(event, element) {
 
-      historyPosition--;
+  if (!isDragging) return;
 
-      document.getElementById(
-        "designCanvas"
-      ).innerHTML = history[historyPosition];
+  const deltaX =
+    event.clientX -
+    dragStartX;
 
-    }
+  const deltaY =
+    event.clientY -
+    dragStartY;
 
+  let newX =
+    elementStartX +
+    deltaX;
 
-    function redoAction() {
-
-      if (
-        historyPosition >= history.length - 1
-      ) return;
-
-      historyPosition++;
-
-      document.getElementById(
-        "designCanvas"
-      ).innerHTML = history[historyPosition];
-
-    }
+  let newY =
+    elementStartY +
+    deltaY;
 
 
-    function loadTemplate(type) {
-
-      const canvas =
-        document.getElementById("designCanvas");
-
-      if (type === "brand") {
-
-        canvas.style.background = "#ffffff";
-
-        canvas.innerHTML = `
-          <div
-            class="canvas-title"
-            onclick="selectElement(this)"
-          >
-            Modern Brand
-          </div>
-
-          <div
-            class="canvas-subtitle"
-            onclick="selectElement(this)"
-          >
-            A premium visual identity template.
-          </div>
-
-          <div
-            class="canvas-orb"
-            onclick="selectElement(this)"
-          ></div>
-
-          <div
-            class="canvas-badge"
-            onclick="selectElement(this)"
-          >
-            BRAND KIT
-          </div>
-        `;
-
-      }
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
 
 
-      if (type === "marketing") {
+  const maxX =
+    canvas.clientWidth -
+    element.offsetWidth;
 
-        canvas.style.background = "#f8f7f4";
-
-        canvas.innerHTML = `
-          <div
-            class="canvas-title"
-            onclick="selectElement(this)"
-          >
-            New Collection
-          </div>
-
-          <div
-            class="canvas-subtitle"
-            onclick="selectElement(this)"
-          >
-            Launch your next product with confidence.
-          </div>
-
-          <div
-            class="canvas-orb"
-            onclick="selectElement(this)"
-          ></div>
-
-          <div
-            class="canvas-badge"
-            onclick="selectElement(this)"
-          >
-            SHOP NOW
-          </div>
-        `;
-
-      }
+  const maxY =
+    canvas.clientHeight -
+    element.offsetHeight;
 
 
-      if (type === "event") {
-
-        canvas.style.background = "#151515";
-
-        canvas.innerHTML = `
-          <div
-            class="canvas-title"
-            style="color:white;"
-            onclick="selectElement(this)"
-          >
-            An Evening
-          </div>
-
-          <div
-            class="canvas-subtitle"
-            style="color:#ccc;"
-            onclick="selectElement(this)"
-          >
-            Join us for an unforgettable celebration.
-          </div>
-
-          <div
-            class="canvas-orb"
-            onclick="selectElement(this)"
-          ></div>
-
-          <div
-            class="canvas-badge"
-            onclick="selectElement(this)"
-          >
-            YOU'RE INVITED
-          </div>
-        `;
-
-      }
-
-      selectedElement = null;
-
-      document.getElementById(
-        "propertyPanel"
-      ).innerHTML = `
-        <p class="empty-selection">
-          Select an element on the canvas to edit its properties.
-        </p>
-      `;
-
-      saveHistory();
-
-    }
+  newX =
+    Math.max(
+      0,
+      Math.min(
+        newX,
+        maxX
+      )
+    );
 
 
-    function rgbToHex(rgb) {
+  newY =
+    Math.max(
+      0,
+      Math.min(
+        newY,
+        maxY
+      )
+    );
 
-      if (!rgb) return "#151515";
 
-      if (rgb.startsWith("#")) {
-        return rgb;
-      }
+  element.style.left =
+    newX + "px";
 
-      const result =
-        rgb.match(/\d+/g);
+  element.style.top =
+    newY + "px";
+}
 
-      if (!result) return "#151515";
 
-      return "#" + result
-        .slice(0, 3)
-        .map(x =>
+// =====================================
+// STOP DRAG
+// =====================================
+
+function stopDrag(event, element) {
+
+  if (!isDragging) return;
+
+  isDragging = false;
+
+  element.removeEventListener(
+    "pointermove",
+    element._dragMove
+  );
+
+  element.removeEventListener(
+    "pointerup",
+    element._dragEnd
+  );
+
+  saveHistory();
+}
+
+
+// =====================================
+// DELETE
+// =====================================
+
+function deleteElement() {
+
+  if (!selectedElement) return;
+
+  selectedElement.remove();
+
+  selectedElement =
+    null;
+
+  document.getElementById(
+    "propertyPanel"
+  ).innerHTML = `
+
+    <p class="empty-selection">
+      Select an element on the canvas
+      to edit its properties.
+    </p>
+
+  `;
+
+  saveHistory();
+}
+
+
+// =====================================
+// DUPLICATE
+// =====================================
+
+function duplicateElement() {
+
+  if (!selectedElement) return;
+
+  const clone =
+    selectedElement.cloneNode(true);
+
+  const currentLeft =
+    parseFloat(
+      selectedElement.style.left
+    ) || 0;
+
+  const currentTop =
+    parseFloat(
+      selectedElement.style.top
+    ) || 0;
+
+  clone.style.left =
+    currentLeft + 25 + "px";
+
+  clone.style.top =
+    currentTop + 25 + "px";
+
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
+
+  canvas.appendChild(clone);
+
+  makeEditable(clone);
+
+  selectElement(clone);
+
+  saveHistory();
+}
+
+
+// =====================================
+// BACKGROUND
+// =====================================
+
+function changeBackground() {
+
+  const colour =
+    prompt(
+      "Enter a background colour:",
+      "#ffffff"
+    );
+
+  if (!colour) return;
+
+  document.getElementById(
+    "designCanvas"
+  ).style.background =
+    colour;
+
+  saveHistory();
+}
+
+
+// =====================================
+// SAVE
+// =====================================
+
+function saveDesign() {
+
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
+
+  localStorage.setItem(
+    "creativeTemplatezDesign",
+    canvas.innerHTML
+  );
+
+  alert(
+    "Your design has been saved!"
+  );
+}
+
+
+// =====================================
+// UNDO
+// =====================================
+
+function saveHistory() {
+
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
+
+  const snapshot =
+    canvas.innerHTML;
+
+  history =
+    history.slice(
+      0,
+      historyPosition + 1
+    );
+
+  history.push(snapshot);
+
+  historyPosition++;
+}
+
+
+function undoAction() {
+
+  if (historyPosition <= 0) {
+    return;
+  }
+
+  historyPosition--;
+
+  restoreHistory();
+}
+
+
+// =====================================
+// REDO
+// =====================================
+
+function redoAction() {
+
+  if (
+    historyPosition >=
+    history.length - 1
+  ) {
+    return;
+  }
+
+  historyPosition++;
+
+  restoreHistory();
+}
+
+
+// =====================================
+// RESTORE
+// =====================================
+
+function restoreHistory() {
+
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
+
+  canvas.innerHTML =
+    history[historyPosition];
+
+  selectedElement =
+    null;
+
+  document.getElementById(
+    "propertyPanel"
+  ).innerHTML = `
+
+    <p class="empty-selection">
+      Select an element on the canvas
+      to edit its properties.
+    </p>
+
+  `;
+
+  initialiseCanvas();
+}
+
+
+// =====================================
+// LOAD TEMPLATE
+// =====================================
+
+function loadTemplate(type) {
+
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
+
+
+  if (type === "brand") {
+
+    canvas.style.background =
+      "#ffffff";
+
+    canvas.innerHTML = `
+
+      <div class="canvas-title">
+        Modern Brand
+      </div>
+
+      <div class="canvas-subtitle">
+        A premium visual identity template.
+      </div>
+
+      <div class="canvas-orb"></div>
+
+      <div class="canvas-badge">
+        BRAND KIT
+      </div>
+
+    `;
+  }
+
+
+  if (type === "marketing") {
+
+    canvas.style.background =
+      "#f8f7f4";
+
+    canvas.innerHTML = `
+
+      <div class="canvas-title">
+        New Collection
+      </div>
+
+      <div class="canvas-subtitle">
+        Launch your next product with confidence.
+      </div>
+
+      <div class="canvas-orb"></div>
+
+      <div class="canvas-badge">
+        SHOP NOW
+      </div>
+
+    `;
+  }
+
+
+  if (type === "event") {
+
+    canvas.style.background =
+      "#151515";
+
+    canvas.innerHTML = `
+
+      <div
+        class="canvas-title"
+        style="color:white;"
+      >
+        An Evening
+      </div>
+
+      <div
+        class="canvas-subtitle"
+        style="color:#cccccc;"
+      >
+        Join us for an unforgettable celebration.
+      </div>
+
+      <div class="canvas-orb"></div>
+
+      <div class="canvas-badge">
+        YOU'RE INVITED
+      </div>
+
+    `;
+  }
+
+
+  selectedElement =
+    null;
+
+  document.getElementById(
+    "propertyPanel"
+  ).innerHTML = `
+
+    <p class="empty-selection">
+      Select an element on the canvas
+      to edit its properties.
+    </p>
+
+  `;
+
+
+  initialiseCanvas();
+
+  saveHistory();
+}
+
+
+// =====================================
+// INITIALISE
+// =====================================
+
+function initialiseCanvas() {
+
+  const canvas =
+    document.getElementById(
+      "designCanvas"
+    );
+
+  const elements =
+    canvas.children;
+
+
+  for (
+    let i = 0;
+    i < elements.length;
+    i++
+  ) {
+
+    makeEditable(
+      elements[i]
+    );
+
+  }
+}
+
+
+// =====================================
+// COLOUR HELPER
+// =====================================
+
+function rgbToHex(rgb) {
+
+  if (!rgb) {
+    return "#151515";
+  }
+
+  if (
+    rgb.startsWith("#")
+  ) {
+    return rgb;
+  }
+
+  const result =
+    rgb.match(/\d+/g);
+
+  if (!result) {
+    return "#151515";
+  }
+
+  return "#" +
+    result
+      .slice(0, 3)
+      .map(
+        x =>
           parseInt(x)
             .toString(16)
             .padStart(2, "0")
-        )
-        .join("");
+      )
+      .join("");
+}
 
-    }
+
+// =====================================
+// HTML HELPER
+// =====================================
+
+function escapeHtml(text) {
+
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 
-    // Start history with the current design.
-    saveHistory();
+// =====================================
+// START
+// =====================================
+
+initialiseCanvas();
+
+saveHistory();
+
+</script>
 
   </script>
 
