@@ -1,1299 +1,1100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CreativeTemplatezCo Editor</title>
+    <title>CreativeTemplatezCo Editor</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css">
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
-    rel="stylesheet"
-  >
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+        body {
+            margin: 0;
+            background: #eeeae4;
+            color: #171717;
+            font-family: "DM Sans", sans-serif;
+            overflow: hidden;
+        }
 
-    body {
-      margin: 0;
-      background: #eeeae4;
-      color: #151515;
-      font-family: "DM Sans", sans-serif;
-      overflow: hidden;
-    }
+        .editor-header {
+            height: 64px;
+            background: #111111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
 
-    .editor-header {
-      height: 64px;
-      background: #ffffff;
-      border-bottom: 1px solid #e3ded7;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-      position: relative;
-      z-index: 10;
-    }
+        .editor-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
 
-    .editor-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-    }
+        .editor-brand-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #ffffff, #b8b0a5);
+            color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
 
-    .editor-brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: #151515;
-      color: #ffffff;
-      display: grid;
-      place-items: center;
-      font-family: "Playfair Display", serif;
-      font-size: 17px;
-    }
+        .editor-brand-name {
+            font-size: 16px;
+        }
 
-    .editor-brand-name {
-      font-size: 15px;
-    }
+        .editor-actions {
+            display: flex;
+            gap: 8px;
+        }
 
-    .editor-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .editor-button {
+            border: 1px solid #555;
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            padding: 9px 13px;
+            cursor: pointer;
+            font-family: inherit;
+        }
 
-    .editor-button {
-      border: 1px solid #e3ded7;
-      background: #ffffff;
-      color: #151515;
-      border-radius: 10px;
-      padding: 10px 15px;
-      font-family: inherit;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        .editor-button.primary {
+            background: white;
+            color: #111;
+            border-color: white;
+        }
 
-    .editor-button:hover {
-      background: #f8f7f4;
-    }
+        .editor-layout {
+            height: calc(100vh - 64px);
+            display: grid;
+            grid-template-columns: 220px 1fr 250px;
+        }
 
-    .editor-button.primary {
-      background: #151515;
-      color: #ffffff;
-      border-color: #151515;
-    }
+        .editor-sidebar {
+            background: #f8f6f2;
+            border-right: 1px solid #ddd8d0;
+            padding: 18px;
+            overflow-y: auto;
+        }
 
-    .editor-layout {
-      height: calc(100vh - 64px);
-      display: grid;
-      grid-template-columns: 230px 1fr 260px;
-    }
+        .editor-sidebar.right {
+            border-right: 0;
+            border-left: 1px solid #ddd8d0;
+        }
 
-    .editor-sidebar {
-      background: #ffffff;
-      border-right: 1px solid #e3ded7;
-      padding: 20px;
-      overflow-y: auto;
-    }
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: #77716a;
+        }
 
-    .editor-sidebar.right {
-      border-right: none;
-      border-left: 1px solid #e3ded7;
-    }
+        .tool-button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd8d0;
+            background: white;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
 
-    .sidebar-title {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #77736d;
-      margin-bottom: 15px;
-    }
+        .tool-button:active {
+            transform: scale(.98);
+        }
 
-    .tool-button {
-      width: 100%;
-      padding: 13px 12px;
-      margin-bottom: 8px;
-      border: 1px solid #e3ded7;
-      background: #ffffff;
-      border-radius: 10px;
-      text-align: left;
-      font-family: inherit;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        .tool-icon {
+            display: inline-block;
+            width: 25px;
+            font-weight: 700;
+        }
 
-    .tool-button:hover {
-      background: #f8f7f4;
-      border-color: #cfc8c0;
-    }
+        .property-group {
+            margin-bottom: 18px;
+        }
 
-    .tool-icon {
-      display: inline-block;
-      width: 24px;
-    }
+        .property-label {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 7px;
+            color: #77716a;
+        }
 
-    .property-group {
-      margin-bottom: 25px;
-    }
+        .property-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d7d1c8;
+            border-radius: 8px;
+            background: white;
+            font-family: inherit;
+        }
 
-    .property-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #77736d;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+        .canvas-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            overflow: auto;
+            background:
+                radial-gradient(#d7d1c8 1px, transparent 1px);
+            background-size: 18px 18px;
+        }
 
-    .property-input {
-      width: 100%;
-      border: 1px solid #e3ded7;
-      border-radius: 9px;
-      padding: 10px;
-      font-family: inherit;
-      background: #ffffff;
-    }
+        .canvas-wrapper {
+            width: 700px;
+            height: 500px;
+            min-width: 700px;
+            min-height: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.12);
+        }
 
-    .color-row {
-      display: flex;
-      gap: 8px;
-    }
+        .design-canvas {
+            position: relative;
+            width: 700px;
+            height: 500px;
+            background: white;
+            overflow: hidden;
+        }
 
-    .color-input {
-      width: 48px;
-      height: 42px;
-      border: 1px solid #e3ded7;
-      border-radius: 9px;
-      padding: 3px;
-      background: #ffffff;
-      cursor: pointer;
-    }
+        .canvas-title {
+            position: absolute;
+            left: 80px;
+            top: 100px;
+            font-family: "Playfair Display", serif;
+            font-size: 52px;
+            font-weight: 600;
+            cursor: move;
+            user-select: none;
+        }
 
-    .canvas-area {
-      position: relative;
-      overflow: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 50px;
-      background:
-        radial-gradient(circle at 1px 1px, rgba(21,21,21,0.08) 1px, transparent 0);
-      background-size: 24px 24px;
-    }
+        .canvas-subtitle {
+            position: absolute;
+            left: 85px;
+            top: 175px;
+            width: 360px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #66615b;
+            cursor: move;
+            user-select: none;
+        }
 
-    .canvas-wrapper {
-      position: relative;
-      width: 700px;
-      height: 500px;
-      flex-shrink: 0;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-    }
+        .canvas-orb {
+            position: absolute;
+            right: 80px;
+            top: 90px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #171717, #77716a);
+            cursor: move;
+            user-select: none;
+        }
 
-    .design-canvas {
-      width: 100%;
-      height: 100%;
-      background: #ffffff;
-      position: relative;
-      overflow: hidden;
-    }
+        .canvas-badge {
+            position: absolute;
+            left: 85px;
+            bottom: 70px;
+            padding: 9px 15px;
+            border: 1px solid #222;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: move;
+            user-select: none;
+        }
 
-    .canvas-title {
-      position: absolute;
-      left: 55px;
-      top: 65px;
-      font-family: "Playfair Display", serif;
-      font-size: 48px;
-      line-height: 1.05;
-      max-width: 520px;
-      cursor: move;
-      user-select: none;
-    }
+        .selected {
+            outline: 2px solid #6d5dfc;
+            outline-offset: 3px;
+        }
 
-    .canvas-subtitle {
-      position: absolute;
-      left: 58px;
-      top: 185px;
-      max-width: 430px;
-      font-size: 17px;
-      line-height: 1.6;
-      color: #77736d;
-      cursor: move;
-      user-select: none;
-    }
+        .empty-selection {
+            color: #77716a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-    .canvas-orb {
-      position: absolute;
-      width: 180px;
-      height: 180px;
-      right: 55px;
-      bottom: 45px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #eadcff, #b78cff);
-      cursor: move;
-    }
+        @media (max-width: 800px) {
+            body {
+                overflow: auto;
+            }
 
-    .canvas-badge {
-      position: absolute;
-      left: 58px;
-      bottom: 48px;
-      padding: 9px 14px;
-      border-radius: 30px;
-      background: #151515;
-      color: #ffffff;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      font-weight: 700;
-      cursor: move;
-      user-select: none;
-    }
+            .editor-header {
+                height: auto;
+                min-height: 64px;
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 12px;
+            }
 
-    .selected {
-      outline: 2px solid #b78cff;
-      outline-offset: 5px;
-    }
+            .editor-layout {
+                height: auto;
+                min-height: calc(100vh - 64px);
+                display: flex;
+                flex-direction: column;
+            }
 
-    .empty-selection {
-      font-size: 14px;
-      color: #77736d;
-      line-height: 1.6;
-    }
+            .editor-sidebar,
+            .editor-sidebar.right {
+                border: 0;
+                border-bottom: 1px solid #ddd8d0;
+            }
 
-    @media (max-width: 900px) {
-      .editor-layout {
-        grid-template-columns: 180px 1fr;
-      }
+            .editor-sidebar {
+                padding: 12px;
+            }
 
-      .editor-sidebar.right {
-        display: none;
-      }
+            .tool-button {
+                width: auto;
+                display: inline-block;
+                margin-right: 5px;
+            }
 
-      .canvas-wrapper {
-        width: 600px;
-        height: 430px;
-      }
-    }
+            .canvas-area {
+                min-height: 560px;
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
 
-    @media (max-width: 650px) {
-      .editor-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .editor-sidebar {
-        display: none;
-      }
-
-      .canvas-area {
-        padding: 20px;
-      }
-
-      .canvas-wrapper {
-        transform: scale(0.72);
-        transform-origin: center center;
-        margin: -70px;
-      }
-
-      .editor-brand-name {
-        display: none;
-      }
-    }
-  </style>
+            .editor-sidebar.right {
+                border-top: 1px solid #ddd8d0;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <header class="editor-header">
+<header class="editor-header">
 
     <div class="editor-brand">
-      <div class="editor-brand-mark">C</div>
-      <div class="editor-brand-name">
-        CreativeTemplatezCo
-      </div>
+        <div class="editor-brand-mark">C</div>
+        <div class="editor-brand-name">CreativeTemplatezCo</div>
     </div>
 
     <div class="editor-actions">
-      <button class="editor-button" onclick="window.location.href='index.html'">
-        Exit
-      </button>
+        <button class="editor-button" onclick="window.location.href='index.html'">
+            Exit
+        </button>
 
-      <button class="editor-button" onclick="undoAction()">
-        Undo
-      </button>
+        <button class="editor-button" onclick="undoAction()">
+            Undo
+        </button>
 
-      <button class="editor-button" onclick="redoAction()">
-        Redo
-      </button>
+        <button class="editor-button" onclick="redoAction()">
+            Redo
+        </button>
 
-      <button class="editor-button primary" onclick="saveDesign()">
-        Save Design
-      </button>
+        <button class="editor-button primary" onclick="saveDesign()">
+            Save
+        </button>
     </div>
 
-  </header>
+</header>
 
 
-  <main class="editor-layout">
+<div class="editor-layout">
 
-    <!-- LEFT TOOLBAR -->
+    <!-- LEFT SIDEBAR -->
 
     <aside class="editor-sidebar">
 
-      <div class="sidebar-title">
-        Add
-      </div>
+        <div class="sidebar-title">
+            Elements
+        </div>
 
-      <button class="tool-button" onclick="addText()">
-        <span class="tool-icon">T</span>
-        Text
-      </button>
+        <button class="tool-button" onclick="addText()">
+            <span class="tool-icon">T</span>
+            Text
+        </button>
 
-      <button class="tool-button" onclick="addShape()">
-        <span class="tool-icon">◇</span>
-        Shape
-      </button>
+        <button class="tool-button" onclick="addShape()">
+            <span class="tool-icon">○</span>
+            Shape
+        </button>
 
-      <button class="tool-button" onclick="changeBackground()">
-        <span class="tool-icon">◼</span>
-        Background
-      </button>
+        <button class="tool-button" onclick="changeBackground()">
+            <span class="tool-icon">◐</span>
+            Background
+        </button>
 
-      <div class="sidebar-title" style="margin-top:30px;">
-        Template
-      </div>
+        <div class="sidebar-title" style="margin-top:25px;">
+            Templates
+        </div>
 
-      <button class="tool-button" onclick="loadTemplate('brand')">
-        Modern Brand
-      </button>
+        <button class="tool-button" onclick="loadTemplate('brand')">
+            Modern Brand
+        </button>
 
-      <button class="tool-button" onclick="loadTemplate('marketing')">
-        Product Launch
-      </button>
+        <button class="tool-button" onclick="loadTemplate('marketing')">
+            Product Launch
+        </button>
 
-      <button class="tool-button" onclick="loadTemplate('event')">
-        Luxury Event
-      </button>
+        <button class="tool-button" onclick="loadTemplate('event')">
+            Luxury Event
+        </button>
 
     </aside>
 
 
     <!-- CANVAS -->
 
-    <section class="canvas-area">
+    <main class="canvas-area">
 
-      <div class="canvas-wrapper">
+        <div class="canvas-wrapper">
 
-        <div id="designCanvas" class="design-canvas">
+            <div id="designCanvas" class="design-canvas">
 
-          <div
-            id="canvasTitle"
-            class="canvas-title"
-            onclick="selectElement(this)"
-          >
-            Your Brand
-          </div>
+                <div
+                    id="canvasTitle"
+                    class="canvas-title"
+                    style="left:80px; top:100px;"
+                >
+                    Your Brand
+                </div>
 
-          <div
-            id="canvasSubtitle"
-            class="canvas-subtitle"
-            onclick="selectElement(this)"
-          >
-            Create something beautiful with CreativeTemplatezCo.
-          </div>
+                <div
+                    id="canvasSubtitle"
+                    class="canvas-subtitle"
+                    style="left:85px; top:175px;"
+                >
+                    Create something beautiful with CreativeTemplatezCo.
+                </div>
 
-          <div
-            id="canvasOrb"
-            class="canvas-orb"
-            onclick="selectElement(this)"
-          ></div>
+                <div
+                    id="canvasOrb"
+                    class="canvas-orb"
+                ></div>
 
-          <div
-            id="canvasBadge"
-            class="canvas-badge"
-            onclick="selectElement(this)"
-          >
-            CREATIVE TEMPLATE
-          </div>
+                <div
+                    id="canvasBadge"
+                    class="canvas-badge"
+                >
+                    CREATIVE TEMPLATE
+                </div>
+
+            </div>
 
         </div>
 
-      </div>
-
-    </section>
+    </main>
 
 
-    <!-- RIGHT PROPERTIES -->
+    <!-- RIGHT SIDEBAR -->
 
     <aside class="editor-sidebar right">
 
-      <div class="sidebar-title">
-        Properties
-      </div>
+        <div class="sidebar-title">
+            Properties
+        </div>
 
-      <div id="propertyPanel">
+        <div id="propertyPanel">
 
-        <p class="empty-selection">
-          Select an element on the canvas to edit its properties.
-        </p>
+            <div class="empty-selection">
+                Select an element to edit it.
+            </div>
 
-      </div>
+        </div>
 
     </aside>
 
-  </main>
+</div>
 
 
-  <script>
+<script>
 
-  <script>
 let selectedElement = null;
 
 let history = [];
 let historyPosition = -1;
 
 let isDragging = false;
-let dragStartX = 0;
-let dragStartY = 0;
-let elementStartX = 0;
-let elementStartY = 0;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+const canvas = document.getElementById("designCanvas");
+const propertyPanel = document.getElementById("propertyPanel");
 
 
-// =====================================
-// SELECT
-// =====================================
+/* SELECT ELEMENT */
 
 function selectElement(element) {
 
-  if (selectedElement) {
-    selectedElement.classList.remove("selected");
-  }
+    selectedElement = element;
 
-  selectedElement = element;
+    document
+        .querySelectorAll("#designCanvas > *")
+        .forEach(el => el.classList.remove("selected"));
 
-  element.classList.add("selected");
+    element.classList.add("selected");
 
-  showProperties(element);
+    showProperties(element);
 }
 
 
-// =====================================
-// PROPERTIES
-// =====================================
+/* PROPERTIES */
 
 function showProperties(element) {
 
-  const panel =
-    document.getElementById("propertyPanel");
+    if (!element) return;
 
-  const style =
-    window.getComputedStyle(element);
+    const text = element.innerText || "";
 
-  const fontSize =
-    parseInt(style.fontSize) || 20;
+    const fontSize =
+        parseInt(getComputedStyle(element).fontSize) || 20;
 
-  panel.innerHTML = `
+    propertyPanel.innerHTML = `
 
-    <div class="property-group">
+        <div class="property-group">
 
-      <label class="property-label">
-        Text
-      </label>
+            <div class="property-label">
+                Text
+            </div>
 
-      <input
-        class="property-input"
-        type="text"
-        value="${escapeHtml(element.innerText || "")}"
-        oninput="updateText(this.value)"
-      >
+            <input
+                class="property-input"
+                value="${escapeHtml(text)}"
+                oninput="updateText(this.value)"
+            >
 
-    </div>
+        </div>
 
 
-    <div class="property-group">
+        <div class="property-group">
 
-      <label class="property-label">
-        Font Size
-      </label>
+            <div class="property-label">
+                Font Size
+            </div>
 
-      <input
-        class="property-input"
-        type="number"
-        min="8"
-        max="200"
-        value="${fontSize}"
-        oninput="updateFontSize(this.value)"
-      >
+            <input
+                class="property-input"
+                type="number"
+                value="${fontSize}"
+                oninput="updateFontSize(this.value)"
+            >
 
-    </div>
+        </div>
 
 
-    <div class="property-group">
+        <div class="property-group">
 
-      <label class="property-label">
-        Text Colour
-      </label>
+            <button
+                class="tool-button"
+                onclick="duplicateElement()"
+            >
+                Duplicate
+            </button>
 
-      <input
-        class="color-input"
-        type="color"
-        value="${rgbToHex(style.color)}"
-        onchange="updateTextColor(this.value)"
-      >
+            <button
+                class="tool-button"
+                onclick="deleteElement()"
+            >
+                Delete
+            </button>
 
-    </div>
+        </div>
 
-
-    <div class="property-group">
-
-      <button
-        class="tool-button"
-        onclick="duplicateElement()"
-      >
-        📋 Duplicate
-      </button>
-
-      <button
-        class="tool-button"
-        onclick="deleteElement()"
-      >
-        🗑 Delete
-      </button>
-
-    </div>
-
-  `;
+    `;
 }
 
 
-// =====================================
-// TEXT
-// =====================================
+/* TEXT */
 
 function updateText(value) {
 
-  if (!selectedElement) return;
-
-  selectedElement.innerText = value;
+    if (selectedElement) {
+        selectedElement.innerText = value;
+    }
 
 }
 
 
-// =====================================
-// FONT SIZE
-// =====================================
+/* FONT SIZE */
 
 function updateFontSize(value) {
 
-  if (!selectedElement) return;
-
-  selectedElement.style.fontSize =
-    value + "px";
-
-}
-
-
-// =====================================
-// TEXT COLOUR
-// =====================================
-
-function updateTextColor(value) {
-
-  if (!selectedElement) return;
-
-  selectedElement.style.color =
-    value;
+    if (selectedElement) {
+        selectedElement.style.fontSize =
+            value + "px";
+    }
 
 }
 
 
-// =====================================
-// ADD TEXT
-// =====================================
+/* ADD TEXT */
 
 function addText() {
 
-  const canvas =
-    document.getElementById("designCanvas");
+    const text = document.createElement("div");
 
-  const text =
-    document.createElement("div");
+    text.innerText = "New Text";
 
-  text.innerText =
-    "New Text";
+    text.style.position = "absolute";
+    text.style.left = "250px";
+    text.style.top = "250px";
+    text.style.fontSize = "28px";
+    text.style.fontFamily =
+        "DM Sans, sans-serif";
 
-  text.style.position =
-    "absolute";
+    canvas.appendChild(text);
 
-  text.style.left =
-    "250px";
+    makeEditable(text);
 
-  text.style.top =
-    "250px";
+    selectElement(text);
 
-  text.style.fontSize =
-    "28px";
+    saveHistory();
 
-  text.style.fontFamily =
-    '"DM Sans", sans-serif';
-
-  text.style.cursor =
-    "move";
-
-  text.style.userSelect =
-    "none";
-
-  canvas.appendChild(text);
-
-  makeEditable(text);
-
-  selectElement(text);
-
-  saveHistory();
 }
 
 
-// =====================================
-// ADD SHAPE
-// =====================================
+/* ADD SHAPE */
 
 function addShape() {
 
-  const canvas =
-    document.getElementById("designCanvas");
+    const shape = document.createElement("div");
 
-  const shape =
-    document.createElement("div");
+    shape.style.position = "absolute";
+    shape.style.left = "300px";
+    shape.style.top = "300px";
+    shape.style.width = "100px";
+    shape.style.height = "100px";
+    shape.style.background =
+        "linear-gradient(135deg,#171717,#77716a)";
+    shape.style.borderRadius = "20px";
 
-  shape.style.position =
-    "absolute";
+    canvas.appendChild(shape);
 
-  shape.style.left =
-    "300px";
+    makeEditable(shape);
 
-  shape.style.top =
-    "300px";
+    selectElement(shape);
 
-  shape.style.width =
-    "100px";
+    saveHistory();
 
-  shape.style.height =
-    "100px";
-
-  shape.style.background =
-    "#b78cff";
-
-  shape.style.borderRadius =
-    "20px";
-
-  shape.style.cursor =
-    "move";
-
-  canvas.appendChild(shape);
-
-  makeEditable(shape);
-
-  selectElement(shape);
-
-  saveHistory();
 }
 
 
-// =====================================
-// MAKE ELEMENT EDITABLE
-// =====================================
+/* MAKE ELEMENT EDITABLE */
 
 function makeEditable(element) {
 
-  element.addEventListener(
-    "pointerdown",
-    startDrag
-  );
+    element.style.cursor = "move";
+    element.style.userSelect = "none";
 
-  element.addEventListener(
-    "click",
-    function(event) {
+    element.addEventListener(
+        "mousedown",
+        mouseDown
+    );
 
-      event.stopPropagation();
+    element.addEventListener(
+        "touchstart",
+        touchStart,
+        { passive: false }
+    );
 
-      selectElement(element);
+    element.addEventListener(
+        "click",
+        function(event) {
 
-    }
-  );
+            event.stopPropagation();
+
+            selectElement(element);
+
+        }
+    );
+
 }
 
 
-// =====================================
-// START DRAG
-// =====================================
+/* MOUSE DRAG */
 
-function startDrag(event) {
+function mouseDown(event) {
 
-  event.preventDefault();
+    event.preventDefault();
 
-  const element =
-    event.currentTarget;
+    selectElement(this);
 
-  selectElement(element);
+    isDragging = true;
 
-  isDragging = true;
+    const rect =
+        this.getBoundingClientRect();
 
-  dragStartX =
-    event.clientX;
+    dragOffsetX =
+        event.clientX - rect.left;
 
-  dragStartY =
-    event.clientY;
+    dragOffsetY =
+        event.clientY - rect.top;
 
-  elementStartX =
-    parseFloat(element.style.left) || 0;
+    document.addEventListener(
+        "mousemove",
+        mouseMove
+    );
 
-  elementStartY =
-    parseFloat(element.style.top) || 0;
+    document.addEventListener(
+        "mouseup",
+        mouseUp
+    );
 
-  element.setPointerCapture(
-    event.pointerId
-  );
-
-  element._dragMove =
-    function(moveEvent) {
-
-      dragElement(
-        moveEvent,
-        element
-      );
-
-    };
-
-  element._dragEnd =
-    function(upEvent) {
-
-      stopDrag(
-        upEvent,
-        element
-      );
-
-    };
-
-  element.addEventListener(
-    "pointermove",
-    element._dragMove
-  );
-
-  element.addEventListener(
-    "pointerup",
-    element._dragEnd
-  );
 }
 
 
-// =====================================
-// DRAG
-// =====================================
+/* MOUSE MOVE */
 
-function dragElement(event, element) {
+function mouseMove(event) {
 
-  if (!isDragging) return;
+    if (!isDragging || !selectedElement)
+        return;
 
-  const deltaX =
-    event.clientX -
-    dragStartX;
+    moveElement(
+        event.clientX,
+        event.clientY
+    );
 
-  const deltaY =
-    event.clientY -
-    dragStartY;
-
-  let newX =
-    elementStartX +
-    deltaX;
-
-  let newY =
-    elementStartY +
-    deltaY;
+}
 
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
+/* MOUSE UP */
+
+function mouseUp() {
+
+    isDragging = false;
+
+    document.removeEventListener(
+        "mousemove",
+        mouseMove
+    );
+
+    document.removeEventListener(
+        "mouseup",
+        mouseUp
+    );
+
+    saveHistory();
+
+}
+
+
+/* TOUCH DRAG */
+
+function touchStart(event) {
+
+    event.preventDefault();
+
+    selectElement(this);
+
+    const touch =
+        event.touches[0];
+
+    const rect =
+        this.getBoundingClientRect();
+
+    dragOffsetX =
+        touch.clientX - rect.left;
+
+    dragOffsetY =
+        touch.clientY - rect.top;
+
+    isDragging = true;
+
+    document.addEventListener(
+        "touchmove",
+        touchMove,
+        { passive: false }
+    );
+
+    document.addEventListener(
+        "touchend",
+        touchEnd
+    );
+
+}
+
+
+/* TOUCH MOVE */
+
+function touchMove(event) {
+
+    if (!isDragging || !selectedElement)
+        return;
+
+    event.preventDefault();
+
+    const touch =
+        event.touches[0];
+
+    moveElement(
+        touch.clientX,
+        touch.clientY
+    );
+
+}
+
+
+/* TOUCH END */
+
+function touchEnd() {
+
+    isDragging = false;
+
+    document.removeEventListener(
+        "touchmove",
+        touchMove
+    );
+
+    document.removeEventListener(
+        "touchend",
+        touchEnd
+    );
+
+    saveHistory();
+
+}
+
+
+/* MOVE ELEMENT */
+
+function moveElement(clientX, clientY) {
+
+    const canvasRect =
+        canvas.getBoundingClientRect();
+
+    let x =
+        clientX -
+        canvasRect.left -
+        dragOffsetX;
+
+    let y =
+        clientY -
+        canvasRect.top -
+        dragOffsetY;
+
+
+    const maxX =
+        canvas.clientWidth -
+        selectedElement.offsetWidth;
+
+    const maxY =
+        canvas.clientHeight -
+        selectedElement.offsetHeight;
+
+
+    x = Math.max(
+        0,
+        Math.min(x, maxX)
+    );
+
+    y = Math.max(
+        0,
+        Math.min(y, maxY)
     );
 
 
-  const maxX =
-    canvas.clientWidth -
-    element.offsetWidth;
+    selectedElement.style.left =
+        x + "px";
 
-  const maxY =
-    canvas.clientHeight -
-    element.offsetHeight;
+    selectedElement.style.top =
+        y + "px";
 
-
-  newX =
-    Math.max(
-      0,
-      Math.min(
-        newX,
-        maxX
-      )
-    );
-
-
-  newY =
-    Math.max(
-      0,
-      Math.min(
-        newY,
-        maxY
-      )
-    );
-
-
-  element.style.left =
-    newX + "px";
-
-  element.style.top =
-    newY + "px";
 }
 
 
-// =====================================
-// STOP DRAG
-// =====================================
-
-function stopDrag(event, element) {
-
-  if (!isDragging) return;
-
-  isDragging = false;
-
-  element.removeEventListener(
-    "pointermove",
-    element._dragMove
-  );
-
-  element.removeEventListener(
-    "pointerup",
-    element._dragEnd
-  );
-
-  saveHistory();
-}
-
-
-// =====================================
-// DELETE
-// =====================================
+/* DELETE */
 
 function deleteElement() {
 
-  if (!selectedElement) return;
+    if (!selectedElement)
+        return;
 
-  selectedElement.remove();
+    selectedElement.remove();
 
-  selectedElement =
-    null;
+    selectedElement = null;
 
-  document.getElementById(
-    "propertyPanel"
-  ).innerHTML = `
+    propertyPanel.innerHTML = `
+        <div class="empty-selection">
+            Select an element to edit it.
+        </div>
+    `;
 
-    <p class="empty-selection">
-      Select an element on the canvas
-      to edit its properties.
-    </p>
+    saveHistory();
 
-  `;
-
-  saveHistory();
 }
 
 
-// =====================================
-// DUPLICATE
-// =====================================
+/* DUPLICATE */
 
 function duplicateElement() {
 
-  if (!selectedElement) return;
+    if (!selectedElement)
+        return;
 
-  const clone =
-    selectedElement.cloneNode(true);
+    const clone =
+        selectedElement.cloneNode(true);
 
-  const currentLeft =
-    parseFloat(
-      selectedElement.style.left
-    ) || 0;
+    const left =
+        parseInt(selectedElement.style.left) || 0;
 
-  const currentTop =
-    parseFloat(
-      selectedElement.style.top
-    ) || 0;
+    const top =
+        parseInt(selectedElement.style.top) || 0;
 
-  clone.style.left =
-    currentLeft + 25 + "px";
 
-  clone.style.top =
-    currentTop + 25 + "px";
+    clone.style.left =
+        (left + 25) + "px";
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
-    );
+    clone.style.top =
+        (top + 25) + "px";
 
-  canvas.appendChild(clone);
 
-  makeEditable(clone);
+    canvas.appendChild(clone);
 
-  selectElement(clone);
+    makeEditable(clone);
 
-  saveHistory();
+    selectElement(clone);
+
+    saveHistory();
+
 }
 
 
-// =====================================
-// BACKGROUND
-// =====================================
+/* BACKGROUND */
 
 function changeBackground() {
 
-  const colour =
-    prompt(
-      "Enter a background colour:",
-      "#ffffff"
-    );
+    const colour =
+        prompt(
+            "Enter a background colour:",
+            "#ffffff"
+        );
 
-  if (!colour) return;
+    if (colour) {
 
-  document.getElementById(
-    "designCanvas"
-  ).style.background =
-    colour;
+        canvas.style.background =
+            colour;
 
-  saveHistory();
+        saveHistory();
+
+    }
+
 }
 
 
-// =====================================
-// SAVE
-// =====================================
+/* SAVE */
 
 function saveDesign() {
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
+    localStorage.setItem(
+        "creativeTemplatezDesign",
+        canvas.innerHTML
     );
 
-  localStorage.setItem(
-    "creativeTemplatezDesign",
-    canvas.innerHTML
-  );
+    alert("Design saved!");
 
-  alert(
-    "Your design has been saved!"
-  );
 }
 
 
-// =====================================
-// UNDO
-// =====================================
+/* HISTORY */
 
 function saveHistory() {
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
+    history =
+        history.slice(
+            0,
+            historyPosition + 1
+        );
+
+    history.push(
+        canvas.innerHTML
     );
 
-  const snapshot =
-    canvas.innerHTML;
+    historyPosition =
+        history.length - 1;
 
-  history =
-    history.slice(
-      0,
-      historyPosition + 1
-    );
-
-  history.push(snapshot);
-
-  historyPosition++;
 }
 
 
 function undoAction() {
 
-  if (historyPosition <= 0) {
-    return;
-  }
+    if (historyPosition <= 0)
+        return;
 
-  historyPosition--;
+    historyPosition--;
 
-  restoreHistory();
+    restoreHistory();
+
 }
 
-
-// =====================================
-// REDO
-// =====================================
 
 function redoAction() {
 
-  if (
-    historyPosition >=
-    history.length - 1
-  ) {
-    return;
-  }
+    if (
+        historyPosition >=
+        history.length - 1
+    )
+        return;
 
-  historyPosition++;
+    historyPosition++;
 
-  restoreHistory();
+    restoreHistory();
+
 }
 
-
-// =====================================
-// RESTORE
-// =====================================
 
 function restoreHistory() {
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
-    );
+    canvas.innerHTML =
+        history[historyPosition];
 
-  canvas.innerHTML =
-    history[historyPosition];
+    selectedElement = null;
 
-  selectedElement =
-    null;
+    propertyPanel.innerHTML = `
+        <div class="empty-selection">
+            Select an element to edit it.
+        </div>
+    `;
 
-  document.getElementById(
-    "propertyPanel"
-  ).innerHTML = `
+    initialiseCanvas();
 
-    <p class="empty-selection">
-      Select an element on the canvas
-      to edit its properties.
-    </p>
-
-  `;
-
-  initialiseCanvas();
 }
 
 
-// =====================================
-// LOAD TEMPLATE
-// =====================================
+/* TEMPLATES */
 
 function loadTemplate(type) {
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
-    );
+    if (type === "brand") {
+
+        canvas.innerHTML = `
+
+            <div
+                class="canvas-title"
+                style="position:absolute;left:100px;top:100px;"
+            >
+                Your Brand
+            </div>
+
+            <div
+                class="canvas-subtitle"
+                style="position:absolute;left:100px;top:175px;"
+            >
+                Build something beautiful.
+            </div>
+
+            <div
+                class="canvas-orb"
+                style="position:absolute;left:450px;top:100px;"
+            ></div>
+
+        `;
+
+    }
 
 
-  if (type === "brand") {
+    if (type === "marketing") {
 
-    canvas.style.background =
-      "#ffffff";
+        canvas.innerHTML = `
 
-    canvas.innerHTML = `
+            <div
+                class="canvas-title"
+                style="position:absolute;left:80px;top:90px;"
+            >
+                NEW COLLECTION
+            </div>
 
-      <div class="canvas-title">
-        Modern Brand
-      </div>
+            <div
+                class="canvas-subtitle"
+                style="position:absolute;left:80px;top:170px;"
+            >
+                Designed to stand out.
+            </div>
 
-      <div class="canvas-subtitle">
-        A premium visual identity template.
-      </div>
+        `;
 
-      <div class="canvas-orb"></div>
-
-      <div class="canvas-badge">
-        BRAND KIT
-      </div>
-
-    `;
-  }
+    }
 
 
-  if (type === "marketing") {
+    if (type === "event") {
 
-    canvas.style.background =
-      "#f8f7f4";
+        canvas.innerHTML = `
 
-    canvas.innerHTML = `
+            <div
+                class="canvas-title"
+                style="position:absolute;left:100px;top:100px;"
+            >
+                SPECIAL EVENT
+            </div>
 
-      <div class="canvas-title">
-        New Collection
-      </div>
+            <div
+                class="canvas-subtitle"
+                style="position:absolute;left:100px;top:175px;"
+            >
+                You are invited.
+            </div>
 
-      <div class="canvas-subtitle">
-        Launch your next product with confidence.
-      </div>
+        `;
 
-      <div class="canvas-orb"></div>
-
-      <div class="canvas-badge">
-        SHOP NOW
-      </div>
-
-    `;
-  }
+    }
 
 
-  if (type === "event") {
+    initialiseCanvas();
 
-    canvas.style.background =
-      "#151515";
+    saveHistory();
 
-    canvas.innerHTML = `
-
-      <div
-        class="canvas-title"
-        style="color:white;"
-      >
-        An Evening
-      </div>
-
-      <div
-        class="canvas-subtitle"
-        style="color:#cccccc;"
-      >
-        Join us for an unforgettable celebration.
-      </div>
-
-      <div class="canvas-orb"></div>
-
-      <div class="canvas-badge">
-        YOU'RE INVITED
-      </div>
-
-    `;
-  }
-
-
-  selectedElement =
-    null;
-
-  document.getElementById(
-    "propertyPanel"
-  ).innerHTML = `
-
-    <p class="empty-selection">
-      Select an element on the canvas
-      to edit its properties.
-    </p>
-
-  `;
-
-
-  initialiseCanvas();
-
-  saveHistory();
 }
 
 
-// =====================================
-// INITIALISE
-// =====================================
+/* INITIALISE */
 
 function initialiseCanvas() {
 
-  const canvas =
-    document.getElementById(
-      "designCanvas"
-    );
+    document
+        .querySelectorAll("#designCanvas > *")
+        .forEach(element => {
 
-  const elements =
-    canvas.children;
+            makeEditable(element);
 
+        });
 
-  for (
-    let i = 0;
-    i < elements.length;
-    i++
-  ) {
-
-    makeEditable(
-      elements[i]
-    );
-
-  }
 }
 
 
-// =====================================
-// COLOUR HELPER
-// =====================================
+/* ESCAPE HTML */
 
-function rgbToHex(rgb) {
+function escapeHtml(value) {
 
-  if (!rgb) {
-    return "#151515";
-  }
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 
-  if (
-    rgb.startsWith("#")
-  ) {
-    return rgb;
-  }
-
-  const result =
-    rgb.match(/\d+/g);
-
-  if (!result) {
-    return "#151515";
-  }
-
-  return "#" +
-    result
-      .slice(0, 3)
-      .map(
-        x =>
-          parseInt(x)
-            .toString(16)
-            .padStart(2, "0")
-      )
-      .join("");
 }
 
 
-// =====================================
-// HTML HELPER
-// =====================================
-
-function escapeHtml(text) {
-
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-
-// =====================================
-// START
-// =====================================
+/* START */
 
 initialiseCanvas();
 
 saveHistory();
 
 </script>
-
-  </script>
 
 </body>
 </html>
