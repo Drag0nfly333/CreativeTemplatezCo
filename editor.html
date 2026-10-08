@@ -8,7 +8,10 @@
 
     <link rel="stylesheet" href="styles.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
         * {
@@ -24,13 +27,14 @@
         }
 
         .editor-header {
-            height: 64px;
+            min-height: 64px;
             background: #111111;
             color: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            gap: 15px;
+            padding: 12px 20px;
         }
 
         .editor-brand {
@@ -45,7 +49,7 @@
             height: 32px;
             border-radius: 9px;
             background: linear-gradient(135deg, #ffffff, #b8b0a5);
-            color: #111;
+            color: #111111;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -58,11 +62,13 @@
 
         .editor-actions {
             display: flex;
-            gap: 8px;
+            gap: 7px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .editor-button {
-            border: 1px solid #555;
+            border: 1px solid #555555;
             background: transparent;
             color: white;
             border-radius: 8px;
@@ -73,7 +79,7 @@
 
         .editor-button.primary {
             background: white;
-            color: #111;
+            color: #111111;
             border-color: white;
         }
 
@@ -118,7 +124,7 @@
         }
 
         .tool-button:active {
-            transform: scale(.98);
+            transform: scale(0.98);
         }
 
         .tool-icon {
@@ -145,6 +151,12 @@
             border-radius: 8px;
             background: white;
             font-family: inherit;
+            font-size: 14px;
+        }
+
+        .property-input:focus {
+            outline: 2px solid #6d5dfc;
+            outline-offset: 1px;
         }
 
         .canvas-area {
@@ -214,7 +226,7 @@
             left: 85px;
             bottom: 70px;
             padding: 9px 15px;
-            border: 1px solid #222;
+            border: 1px solid #222222;
             border-radius: 100px;
             font-size: 11px;
             font-weight: 700;
@@ -234,22 +246,30 @@
             line-height: 1.6;
         }
 
+        .selected-label {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
         @media (max-width: 800px) {
+
             body {
                 overflow: auto;
             }
 
             .editor-header {
-                height: auto;
-                min-height: 64px;
-                flex-wrap: wrap;
-                gap: 10px;
-                padding: 12px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .editor-actions {
+                justify-content: flex-start;
             }
 
             .editor-layout {
                 height: auto;
-                min-height: calc(100vh - 64px);
+                min-height: calc(100vh - 120px);
                 display: flex;
                 flex-direction: column;
             }
@@ -289,25 +309,41 @@
 
     <div class="editor-brand">
         <div class="editor-brand-mark">C</div>
-        <div class="editor-brand-name">CreativeTemplatezCo</div>
+        <div class="editor-brand-name">
+            CreativeTemplatezCo
+        </div>
     </div>
 
     <div class="editor-actions">
-        <button class="editor-button" onclick="window.location.href='index.html'">
+
+        <button
+            class="editor-button"
+            onclick="window.location.href='index.html'"
+        >
             Exit
         </button>
 
-        <button class="editor-button" onclick="undoAction()">
+        <button
+            class="editor-button"
+            onclick="undoAction()"
+        >
             Undo
         </button>
 
-        <button class="editor-button" onclick="redoAction()">
+        <button
+            class="editor-button"
+            onclick="redoAction()"
+        >
             Redo
         </button>
 
-        <button class="editor-button primary" onclick="saveDesign()">
+        <button
+            class="editor-button primary"
+            onclick="saveDesign()"
+        >
             Save
         </button>
+
     </div>
 
 </header>
@@ -315,7 +351,8 @@
 
 <div class="editor-layout">
 
-    <!-- LEFT SIDEBAR -->
+
+    <!-- LEFT TOOLBAR -->
 
     <aside class="editor-sidebar">
 
@@ -323,34 +360,57 @@
             Elements
         </div>
 
-        <button class="tool-button" onclick="addText()">
+        <button
+            class="tool-button"
+            onclick="addText()"
+        >
             <span class="tool-icon">T</span>
             Text
         </button>
 
-        <button class="tool-button" onclick="addShape()">
+        <button
+            class="tool-button"
+            onclick="addShape()"
+        >
             <span class="tool-icon">○</span>
             Shape
         </button>
 
-        <button class="tool-button" onclick="changeBackground()">
+        <button
+            class="tool-button"
+            onclick="changeBackground()"
+        >
             <span class="tool-icon">◐</span>
             Background
         </button>
 
-        <div class="sidebar-title" style="margin-top:25px;">
+
+        <div
+            class="sidebar-title"
+            style="margin-top:25px;"
+        >
             Templates
         </div>
 
-        <button class="tool-button" onclick="loadTemplate('brand')">
+
+        <button
+            class="tool-button"
+            onclick="loadTemplate('brand')"
+        >
             Modern Brand
         </button>
 
-        <button class="tool-button" onclick="loadTemplate('marketing')">
+        <button
+            class="tool-button"
+            onclick="loadTemplate('marketing')"
+        >
             Product Launch
         </button>
 
-        <button class="tool-button" onclick="loadTemplate('event')">
+        <button
+            class="tool-button"
+            onclick="loadTemplate('event')"
+        >
             Luxury Event
         </button>
 
@@ -363,7 +423,10 @@
 
         <div class="canvas-wrapper">
 
-            <div id="designCanvas" class="design-canvas">
+            <div
+                id="designCanvas"
+                class="design-canvas"
+            >
 
                 <div
                     id="canvasTitle"
@@ -373,6 +436,7 @@
                     Your Brand
                 </div>
 
+
                 <div
                     id="canvasSubtitle"
                     class="canvas-subtitle"
@@ -381,10 +445,12 @@
                     Create something beautiful with CreativeTemplatezCo.
                 </div>
 
+
                 <div
                     id="canvasOrb"
                     class="canvas-orb"
                 ></div>
+
 
                 <div
                     id="canvasBadge"
@@ -400,7 +466,7 @@
     </main>
 
 
-    <!-- RIGHT SIDEBAR -->
+    <!-- RIGHT PROPERTIES -->
 
     <aside class="editor-sidebar right">
 
@@ -426,44 +492,102 @@
 let selectedElement = null;
 
 let history = [];
+
 let historyPosition = -1;
 
 let isDragging = false;
+
 let dragOffsetX = 0;
+
 let dragOffsetY = 0;
 
-const canvas = document.getElementById("designCanvas");
-const propertyPanel = document.getElementById("propertyPanel");
+
+const canvas =
+    document.getElementById(
+        "designCanvas"
+    );
 
 
-/* SELECT ELEMENT */
+const propertyPanel =
+    document.getElementById(
+        "propertyPanel"
+    );
+
+
+/* =========================
+   SELECT
+========================= */
 
 function selectElement(element) {
 
+    if (!element) {
+        return;
+    }
+
+
     selectedElement = element;
 
+
     document
-        .querySelectorAll("#designCanvas > *")
-        .forEach(el => el.classList.remove("selected"));
+        .querySelectorAll(
+            "#designCanvas > *"
+        )
+        .forEach(function(el) {
 
-    element.classList.add("selected");
+            el.classList.remove(
+                "selected"
+            );
 
-    showProperties(element);
+        });
+
+
+    element.classList.add(
+        "selected"
+    );
+
+
+    showProperties(
+        element
+    );
 }
 
 
-/* PROPERTIES */
+/* =========================
+   PROPERTIES PANEL
+========================= */
 
 function showProperties(element) {
 
-    if (!element) return;
+    if (!element) {
 
-    const text = element.innerText || "";
+        propertyPanel.innerHTML = `
+            <div class="empty-selection">
+                Select an element to edit it.
+            </div>
+        `;
 
-    const fontSize =
-        parseInt(getComputedStyle(element).fontSize) || 20;
+        return;
+    }
+
+
+    const currentText =
+        element.innerText || "";
+
+
+    const currentFontSize =
+        parseInt(
+            getComputedStyle(
+                element
+            ).fontSize
+        ) || 20;
+
 
     propertyPanel.innerHTML = `
+
+        <div class="selected-label">
+            Selected Element
+        </div>
+
 
         <div class="property-group">
 
@@ -471,11 +595,12 @@ function showProperties(element) {
                 Text
             </div>
 
-            <input
+            <textarea
+                id="textEditor"
                 class="property-input"
-                value="${escapeHtml(text)}"
-                oninput="updateText(this.value)"
-            >
+                rows="5"
+                placeholder="Enter your text..."
+            ></textarea>
 
         </div>
 
@@ -487,10 +612,12 @@ function showProperties(element) {
             </div>
 
             <input
+                id="fontSizeEditor"
                 class="property-input"
                 type="number"
-                value="${fontSize}"
-                oninput="updateFontSize(this.value)"
+                min="8"
+                max="150"
+                value="${currentFontSize}"
             >
 
         </div>
@@ -499,15 +626,15 @@ function showProperties(element) {
         <div class="property-group">
 
             <button
+                id="duplicateButton"
                 class="tool-button"
-                onclick="duplicateElement()"
             >
                 Duplicate
             </button>
 
             <button
+                id="deleteButton"
                 class="tool-button"
-                onclick="deleteElement()"
             >
                 Delete
             </button>
@@ -515,101 +642,268 @@ function showProperties(element) {
         </div>
 
     `;
+
+
+    const textEditor =
+        document.getElementById(
+            "textEditor"
+        );
+
+
+    const fontSizeEditor =
+        document.getElementById(
+            "fontSizeEditor"
+        );
+
+
+    const duplicateButton =
+        document.getElementById(
+            "duplicateButton"
+        );
+
+
+    const deleteButton =
+        document.getElementById(
+            "deleteButton"
+        );
+
+
+    textEditor.value =
+        currentText;
+
+
+    textEditor.addEventListener(
+        "input",
+        function() {
+
+            if (!selectedElement) {
+                return;
+            }
+
+
+            selectedElement.innerText =
+                textEditor.value;
+
+        }
+    );
+
+
+    textEditor.addEventListener(
+        "change",
+        function() {
+
+            saveHistory();
+
+        }
+    );
+
+
+    fontSizeEditor.addEventListener(
+        "input",
+        function() {
+
+            if (!selectedElement) {
+                return;
+            }
+
+
+            selectedElement.style.fontSize =
+                fontSizeEditor.value +
+                "px";
+
+        }
+    );
+
+
+    fontSizeEditor.addEventListener(
+        "change",
+        function() {
+
+            saveHistory();
+
+        }
+    );
+
+
+    duplicateButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            duplicateElement();
+
+        }
+    );
+
+
+    deleteButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            deleteElement();
+
+        }
+    );
 }
 
 
-/* TEXT */
-
-function updateText(value) {
-
-    if (selectedElement) {
-        selectedElement.innerText = value;
-    }
-
-}
-
-
-/* FONT SIZE */
-
-function updateFontSize(value) {
-
-    if (selectedElement) {
-        selectedElement.style.fontSize =
-            value + "px";
-    }
-
-}
-
-
-/* ADD TEXT */
+/* =========================
+   ADD TEXT
+========================= */
 
 function addText() {
 
-    const text = document.createElement("div");
+    const text =
+        document.createElement(
+            "div"
+        );
 
-    text.innerText = "New Text";
 
-    text.style.position = "absolute";
-    text.style.left = "250px";
-    text.style.top = "250px";
-    text.style.fontSize = "28px";
+    text.innerText =
+        "New Text";
+
+
+    text.style.position =
+        "absolute";
+
+
+    text.style.left =
+        "250px";
+
+
+    text.style.top =
+        "250px";
+
+
+    text.style.fontSize =
+        "28px";
+
+
     text.style.fontFamily =
         "DM Sans, sans-serif";
 
-    canvas.appendChild(text);
 
-    makeEditable(text);
+    text.style.cursor =
+        "move";
 
-    selectElement(text);
+
+    text.style.userSelect =
+        "none";
+
+
+    canvas.appendChild(
+        text
+    );
+
+
+    makeEditable(
+        text
+    );
+
+
+    selectElement(
+        text
+    );
+
 
     saveHistory();
-
 }
 
 
-/* ADD SHAPE */
+/* =========================
+   ADD SHAPE
+========================= */
 
 function addShape() {
 
-    const shape = document.createElement("div");
+    const shape =
+        document.createElement(
+            "div"
+        );
 
-    shape.style.position = "absolute";
-    shape.style.left = "300px";
-    shape.style.top = "300px";
-    shape.style.width = "100px";
-    shape.style.height = "100px";
+
+    shape.style.position =
+        "absolute";
+
+
+    shape.style.left =
+        "300px";
+
+
+    shape.style.top =
+        "300px";
+
+
+    shape.style.width =
+        "100px";
+
+
+    shape.style.height =
+        "100px";
+
+
     shape.style.background =
         "linear-gradient(135deg,#171717,#77716a)";
-    shape.style.borderRadius = "20px";
 
-    canvas.appendChild(shape);
 
-    makeEditable(shape);
+    shape.style.borderRadius =
+        "20px";
 
-    selectElement(shape);
+
+    shape.style.cursor =
+        "move";
+
+
+    canvas.appendChild(
+        shape
+    );
+
+
+    makeEditable(
+        shape
+    );
+
+
+    selectElement(
+        shape
+    );
+
 
     saveHistory();
-
 }
 
 
-/* MAKE ELEMENT EDITABLE */
+/* =========================
+   EDITABLE
+========================= */
 
 function makeEditable(element) {
 
-    element.style.cursor = "move";
-    element.style.userSelect = "none";
+    element.style.cursor =
+        "move";
+
+
+    element.style.userSelect =
+        "none";
+
 
     element.addEventListener(
         "mousedown",
         mouseDown
     );
 
+
     element.addEventListener(
         "touchstart",
         touchStart,
-        { passive: false }
+        {
+            passive: false
+        }
     );
+
 
     element.addEventListener(
         "click",
@@ -617,170 +911,232 @@ function makeEditable(element) {
 
             event.stopPropagation();
 
-            selectElement(element);
+            selectElement(
+                element
+            );
 
         }
     );
-
 }
 
 
-/* MOUSE DRAG */
+/* =========================
+   MOUSE DOWN
+========================= */
 
 function mouseDown(event) {
 
     event.preventDefault();
 
-    selectElement(this);
+
+    selectElement(
+        this
+    );
+
 
     isDragging = true;
+
 
     const rect =
         this.getBoundingClientRect();
 
+
     dragOffsetX =
-        event.clientX - rect.left;
+        event.clientX -
+        rect.left;
+
 
     dragOffsetY =
-        event.clientY - rect.top;
+        event.clientY -
+        rect.top;
+
 
     document.addEventListener(
         "mousemove",
         mouseMove
     );
 
+
     document.addEventListener(
         "mouseup",
         mouseUp
     );
-
 }
 
 
-/* MOUSE MOVE */
+/* =========================
+   MOUSE MOVE
+========================= */
 
 function mouseMove(event) {
 
-    if (!isDragging || !selectedElement)
+    if (
+        !isDragging ||
+        !selectedElement
+    ) {
         return;
+    }
+
 
     moveElement(
         event.clientX,
         event.clientY
     );
-
 }
 
 
-/* MOUSE UP */
+/* =========================
+   MOUSE UP
+========================= */
 
 function mouseUp() {
 
     isDragging = false;
+
 
     document.removeEventListener(
         "mousemove",
         mouseMove
     );
 
+
     document.removeEventListener(
         "mouseup",
         mouseUp
     );
 
-    saveHistory();
 
+    saveHistory();
 }
 
 
-/* TOUCH DRAG */
+/* =========================
+   TOUCH START
+========================= */
 
 function touchStart(event) {
 
     event.preventDefault();
 
-    selectElement(this);
+
+    selectElement(
+        this
+    );
+
 
     const touch =
         event.touches[0];
 
+
     const rect =
         this.getBoundingClientRect();
 
+
     dragOffsetX =
-        touch.clientX - rect.left;
+        touch.clientX -
+        rect.left;
+
 
     dragOffsetY =
-        touch.clientY - rect.top;
+        touch.clientY -
+        rect.top;
+
 
     isDragging = true;
+
 
     document.addEventListener(
         "touchmove",
         touchMove,
-        { passive: false }
+        {
+            passive: false
+        }
     );
+
 
     document.addEventListener(
         "touchend",
         touchEnd
     );
-
 }
 
 
-/* TOUCH MOVE */
+/* =========================
+   TOUCH MOVE
+========================= */
 
 function touchMove(event) {
 
-    if (!isDragging || !selectedElement)
+    if (
+        !isDragging ||
+        !selectedElement
+    ) {
         return;
+    }
+
 
     event.preventDefault();
 
+
     const touch =
         event.touches[0];
+
 
     moveElement(
         touch.clientX,
         touch.clientY
     );
-
 }
 
 
-/* TOUCH END */
+/* =========================
+   TOUCH END
+========================= */
 
 function touchEnd() {
 
     isDragging = false;
+
 
     document.removeEventListener(
         "touchmove",
         touchMove
     );
 
+
     document.removeEventListener(
         "touchend",
         touchEnd
     );
 
-    saveHistory();
 
+    saveHistory();
 }
 
 
-/* MOVE ELEMENT */
+/* =========================
+   MOVE
+========================= */
 
-function moveElement(clientX, clientY) {
+function moveElement(
+    clientX,
+    clientY
+) {
+
+    if (!selectedElement) {
+        return;
+    }
+
 
     const canvasRect =
         canvas.getBoundingClientRect();
+
 
     let x =
         clientX -
         canvasRect.left -
         dragOffsetX;
+
 
     let y =
         clientY -
@@ -792,41 +1148,58 @@ function moveElement(clientX, clientY) {
         canvas.clientWidth -
         selectedElement.offsetWidth;
 
+
     const maxY =
         canvas.clientHeight -
         selectedElement.offsetHeight;
 
 
-    x = Math.max(
-        0,
-        Math.min(x, maxX)
-    );
+    x =
+        Math.max(
+            0,
+            Math.min(
+                x,
+                maxX
+            )
+        );
 
-    y = Math.max(
-        0,
-        Math.min(y, maxY)
-    );
+
+    y =
+        Math.max(
+            0,
+            Math.min(
+                y,
+                maxY
+            )
+        );
 
 
     selectedElement.style.left =
         x + "px";
 
+
     selectedElement.style.top =
         y + "px";
-
 }
 
 
-/* DELETE */
+/* =========================
+   DELETE
+========================= */
 
 function deleteElement() {
 
-    if (!selectedElement)
+    if (!selectedElement) {
         return;
+    }
+
 
     selectedElement.remove();
 
-    selectedElement = null;
+
+    selectedElement =
+        null;
+
 
     propertyPanel.innerHTML = `
         <div class="empty-selection">
@@ -834,47 +1207,72 @@ function deleteElement() {
         </div>
     `;
 
-    saveHistory();
 
+    saveHistory();
 }
 
 
-/* DUPLICATE */
+/* =========================
+   DUPLICATE
+========================= */
 
 function duplicateElement() {
 
-    if (!selectedElement)
+    if (!selectedElement) {
         return;
+    }
+
 
     const clone =
-        selectedElement.cloneNode(true);
+        selectedElement.cloneNode(
+            true
+        );
+
 
     const left =
-        parseInt(selectedElement.style.left) || 0;
+        parseInt(
+            selectedElement.style.left
+        ) || 0;
+
 
     const top =
-        parseInt(selectedElement.style.top) || 0;
+        parseInt(
+            selectedElement.style.top
+        ) || 0;
 
 
     clone.style.left =
-        (left + 25) + "px";
+        (left + 25) +
+        "px";
+
 
     clone.style.top =
-        (top + 25) + "px";
+        (top + 25) +
+        "px";
 
 
-    canvas.appendChild(clone);
+    canvas.appendChild(
+        clone
+    );
 
-    makeEditable(clone);
 
-    selectElement(clone);
+    makeEditable(
+        clone
+    );
+
+
+    selectElement(
+        clone
+    );
+
 
     saveHistory();
-
 }
 
 
-/* BACKGROUND */
+/* =========================
+   BACKGROUND
+========================= */
 
 function changeBackground() {
 
@@ -884,19 +1282,23 @@ function changeBackground() {
             "#ffffff"
         );
 
-    if (colour) {
 
-        canvas.style.background =
-            colour;
-
-        saveHistory();
-
+    if (!colour) {
+        return;
     }
 
+
+    canvas.style.background =
+        colour;
+
+
+    saveHistory();
 }
 
 
-/* SAVE */
+/* =========================
+   SAVE
+========================= */
 
 function saveDesign() {
 
@@ -905,12 +1307,16 @@ function saveDesign() {
         canvas.innerHTML
     );
 
-    alert("Design saved!");
 
+    alert(
+        "Design saved!"
+    );
 }
 
 
-/* HISTORY */
+/* =========================
+   HISTORY
+========================= */
 
 function saveHistory() {
 
@@ -920,25 +1326,30 @@ function saveHistory() {
             historyPosition + 1
         );
 
+
     history.push(
         canvas.innerHTML
     );
 
+
     historyPosition =
         history.length - 1;
-
 }
 
 
 function undoAction() {
 
-    if (historyPosition <= 0)
+    if (
+        historyPosition <= 0
+    ) {
         return;
+    }
+
 
     historyPosition--;
 
-    restoreHistory();
 
+    restoreHistory();
 }
 
 
@@ -947,22 +1358,29 @@ function redoAction() {
     if (
         historyPosition >=
         history.length - 1
-    )
+    ) {
         return;
+    }
+
 
     historyPosition++;
 
-    restoreHistory();
 
+    restoreHistory();
 }
 
 
 function restoreHistory() {
 
     canvas.innerHTML =
-        history[historyPosition];
+        history[
+            historyPosition
+        ];
 
-    selectedElement = null;
+
+    selectedElement =
+        null;
+
 
     propertyPanel.innerHTML = `
         <div class="empty-selection">
@@ -970,12 +1388,14 @@ function restoreHistory() {
         </div>
     `;
 
-    initialiseCanvas();
 
+    initialiseCanvas();
 }
 
 
-/* TEMPLATES */
+/* =========================
+   TEMPLATES
+========================= */
 
 function loadTemplate(type) {
 
@@ -985,25 +1405,38 @@ function loadTemplate(type) {
 
             <div
                 class="canvas-title"
-                style="position:absolute;left:100px;top:100px;"
+                style="
+                    position:absolute;
+                    left:100px;
+                    top:100px;
+                "
             >
                 Your Brand
             </div>
 
+
             <div
                 class="canvas-subtitle"
-                style="position:absolute;left:100px;top:175px;"
+                style="
+                    position:absolute;
+                    left:100px;
+                    top:175px;
+                "
             >
                 Build something beautiful.
             </div>
 
+
             <div
                 class="canvas-orb"
-                style="position:absolute;left:450px;top:100px;"
+                style="
+                    position:absolute;
+                    left:450px;
+                    top:100px;
+                "
             ></div>
 
         `;
-
     }
 
 
@@ -1013,20 +1446,28 @@ function loadTemplate(type) {
 
             <div
                 class="canvas-title"
-                style="position:absolute;left:80px;top:90px;"
+                style="
+                    position:absolute;
+                    left:80px;
+                    top:90px;
+                "
             >
                 NEW COLLECTION
             </div>
 
+
             <div
                 class="canvas-subtitle"
-                style="position:absolute;left:80px;top:170px;"
+                style="
+                    position:absolute;
+                    left:80px;
+                    top:170px;
+                "
             >
                 Designed to stand out.
             </div>
 
         `;
-
     }
 
 
@@ -1036,59 +1477,67 @@ function loadTemplate(type) {
 
             <div
                 class="canvas-title"
-                style="position:absolute;left:100px;top:100px;"
+                style="
+                    position:absolute;
+                    left:100px;
+                    top:100px;
+                "
             >
                 SPECIAL EVENT
             </div>
 
+
             <div
                 class="canvas-subtitle"
-                style="position:absolute;left:100px;top:175px;"
+                style="
+                    position:absolute;
+                    left:100px;
+                    top:175px;
+                "
             >
                 You are invited.
             </div>
 
         `;
-
     }
 
 
     initialiseCanvas();
 
     saveHistory();
-
 }
 
 
-/* INITIALISE */
+/* =========================
+   INITIALISE
+========================= */
 
 function initialiseCanvas() {
 
     document
-        .querySelectorAll("#designCanvas > *")
-        .forEach(element => {
+        .querySelectorAll(
+            "#designCanvas > *"
+        )
+        .forEach(function(element) {
 
-            makeEditable(element);
+            makeEditable(
+                element
+            );
 
         });
-
 }
 
 
-/* ESCAPE HTML */
+/* =========================
+   START
+========================= */
 
-function escapeHtml(value) {
+propertyPanel.innerHTML = `
+    <div class="empty-selection">
+        Select an element to edit it.
+    </div>
+`;
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-}
-
-
-/* START */
 
 initialiseCanvas();
 
