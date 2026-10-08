@@ -546,20 +546,11 @@
      ================================================== -->
 
 <script>
+function openEditor(templateName = "Untitled Design") {
 
-  function openEditor(templateName = "Untitled Design") {
+  window.location.href =
+    "editor.html?template=" +
+    encodeURIComponent(templateName);
 
-    alert(
-      templateName +
-      " editor coming next."
-    );
-
-  }
-
+}
 </script>
-
-
-</body>
-
-</html>
-```
