@@ -1,11 +1,15 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>CreativeTemplatezCo</title>
 
@@ -30,359 +34,532 @@
     rel="stylesheet"
   >
 
-  <style>
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: "DM Sans", sans-serif;
-      background: #f8f7f4;
-      color: #171717;
-    }
-
-    header {
-      height: 78px;
-      padding: 0 6%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #e6e2dc;
-      background: rgba(248, 247, 244, 0.92);
-    }
-
-    .logo {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .logo span {
-      font-family: "Playfair Display", serif;
-      font-weight: 500;
-    }
-
-    nav {
-      display: flex;
-      gap: 30px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #555;
-      font-size: 14px;
-    }
-
-    .header-button {
-      border: none;
-      background: #171717;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .hero {
-      min-height: calc(100vh - 78px);
-      padding: 90px 8%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 60px;
-    }
-
-    .hero-content {
-      max-width: 680px;
-    }
-
-    .eyebrow {
-      font-size: 11px;
-      letter-spacing: 3px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      color: #777;
-    }
-
-    h1 {
-      font-family: "Playfair Display", serif;
-      font-size: clamp(52px, 7vw, 92px);
-      line-height: 0.98;
-      letter-spacing: -4px;
-      font-weight: 600;
-    }
-
-    h1 em {
-      font-weight: 500;
-    }
-
-    .hero-description {
-      margin-top: 30px;
-      max-width: 520px;
-      color: #666;
-      font-size: 17px;
-      line-height: 1.7;
-    }
-
-    .hero-buttons {
-      margin-top: 35px;
-      display: flex;
-      gap: 12px;
-    }
-
-    .button {
-      padding: 15px 24px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .button-primary {
-      background: #171717;
-      color: white;
-    }
-
-    .button-secondary {
-      border: 1px solid #ccc7bf;
-      color: #171717;
-    }
-
-    .visual {
-      width: 390px;
-      height: 480px;
-      position: relative;
-    }
-
-    .design-card {
-      position: absolute;
-      width: 285px;
-      height: 380px;
-      right: 15px;
-      top: 30px;
-      background: #171717;
-      color: white;
-      border-radius: 24px;
-      padding: 30px;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.18);
-      overflow: hidden;
-    }
-
-    .design-card::before {
-      content: "";
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: linear-gradient(
-        135deg,
-        #d8b4fe,
-        #fbcfe8
-      );
-      right: -90px;
-      top: 55px;
-    }
-
-    .card-label {
-      font-size: 9px;
-      letter-spacing: 2px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-title {
-      position: absolute;
-      left: 30px;
-      bottom: 45px;
-      font-family: "Playfair Display", serif;
-      font-size: 43px;
-      line-height: 0.9;
-      z-index: 2;
-    }
-
-    .card-title em {
-      font-weight: 400;
-    }
-
-    .section {
-      padding: 100px 8%;
-    }
-
-    .section-title {
-      font-family: "Playfair Display", serif;
-      font-size: 52px;
-      letter-spacing: -2px;
-    }
-
-    .categories {
-      margin-top: 40px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .category {
-      background: white;
-      border: 1px solid #e5e0d9;
-      padding: 28px;
-      border-radius: 18px;
-      font-weight: 600;
-    }
-
-    @media (max-width: 850px) {
-
-      nav {
-        display: none;
-      }
-
-      .hero {
-        padding: 70px 6%;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .visual {
-        align-self: center;
-      }
-
-      .categories {
-        grid-template-columns: 1fr;
-      }
-    }
-
-  </style>
 </head>
+
 
 <body>
 
-  <header>
 
-    <div class="logo">
-      Creative<span>Templatez</span>Co
+<!-- ==================================================
+     HEADER
+     ================================================== -->
+
+<header class="site-header">
+
+  <a
+    href="#"
+    class="logo"
+  >
+
+    <span class="logo-mark">
+      CT
+    </span>
+
+    Creative<span>Templatez</span>Co
+
+  </a>
+
+
+  <nav class="site-navigation">
+
+    <a href="#templates">
+      Templates
+    </a>
+
+    <a href="#categories">
+      Categories
+    </a>
+
+    <a href="#about">
+      About
+    </a>
+
+  </nav>
+
+
+  <button
+    class="button button-primary"
+    onclick="openEditor()"
+  >
+    Open Editor
+  </button>
+
+</header>
+
+
+
+<!-- ==================================================
+     HERO
+     ================================================== -->
+
+<main>
+
+
+<section class="hero">
+
+
+  <div class="hero-content">
+
+    <p class="eyebrow">
+      PREMIUM DIGITAL TEMPLATES
+    </p>
+
+
+    <h1 class="hero-title">
+
+      Design beautifully.<br>
+
+      <em>Edit effortlessly.</em>
+
+    </h1>
+
+
+    <p class="hero-description">
+
+      Premium editable templates designed for
+      modern brands, creators, businesses and
+      everyday ideas.
+
+    </p>
+
+
+    <div class="hero-actions">
+
+      <a
+        href="#templates"
+        class="button button-primary button-large"
+      >
+        Explore Templates
+      </a>
+
+
+      <button
+        class="button button-secondary button-large"
+        onclick="openEditor()"
+      >
+        Try the Editor
+      </button>
+
     </div>
 
-    <nav>
-      <a href="#templates">Templates</a>
-      <a href="#categories">Categories</a>
-      <a href="#about">About</a>
-    </nav>
-
-    <button class="header-button">
-      Open Editor
-    </button>
-
-  </header>
+  </div>
 
 
-  <main>
 
-    <section class="hero">
+  <!-- HERO DESIGN PREVIEW -->
 
-      <div class="hero-content">
+  <div class="hero-visual">
 
-        <p class="eyebrow">
-          PREMIUM DIGITAL TEMPLATES
-        </p>
+    <div class="design-card">
 
-        <h1>
-          Design beautifully.
-          <em>Edit effortlessly.</em>
-        </h1>
-
-        <p class="hero-description">
-          Premium editable templates designed for modern
-          brands, creators, businesses and everyday ideas.
-        </p>
-
-        <div class="hero-buttons">
-
-          <a
-            href="#templates"
-            class="button button-primary"
-          >
-            Explore Templates
-          </a>
-
-          <a
-            href="#editor"
-            class="button button-secondary"
-          >
-            Try the Editor
-          </a>
-
-        </div>
-
+      <div class="card-label">
+        CREATIVE TEMPLATEZ CO
       </div>
 
 
-      <div class="visual">
+      <div class="card-title">
 
-        <div class="design-card">
+        MAKE<br>
 
-          <div class="card-label">
-            CREATIVE TEMPLATEZ CO
-          </div>
-
-          <div class="card-title">
-            MAKE<br>
-            <em>IT YOURS.</em>
-          </div>
-
-        </div>
+        <em>IT YOURS.</em>
 
       </div>
 
-    </section>
+    </div>
+
+  </div>
 
 
-    <section
-      class="section"
-      id="categories"
-    >
+</section>
 
-      <p class="eyebrow">
-        EXPLORE
-      </p>
 
-      <h2 class="section-title">
-        Templates for every idea.
-      </h2>
 
-      <div class="categories">
+<!-- ==================================================
+     CATEGORIES
+     ================================================== -->
 
-        <div class="category">
+<section
+  class="section"
+  id="categories"
+>
+
+  <div class="section-heading">
+
+    <p class="eyebrow">
+      EXPLORE THE COLLECTION
+    </p>
+
+    <h2 class="section-title">
+      Templates for every idea.
+    </h2>
+
+  </div>
+
+
+  <div class="category-grid">
+
+
+    <div class="category-card">
+
+      <div>
+        <h3>
           Social Media
-        </div>
+        </h3>
+      </div>
 
-        <div class="category">
+      <span class="category-arrow">
+        ↗
+      </span>
+
+    </div>
+
+
+    <div class="category-card">
+
+      <div>
+        <h3>
           Business
-        </div>
+        </h3>
+      </div>
 
-        <div class="category">
+      <span class="category-arrow">
+        ↗
+      </span>
+
+    </div>
+
+
+    <div class="category-card">
+
+      <div>
+        <h3>
           Branding
-        </div>
+        </h3>
+      </div>
 
-        <div class="category">
+      <span class="category-arrow">
+        ↗
+      </span>
+
+    </div>
+
+
+    <div class="category-card">
+
+      <div>
+        <h3>
           Marketing
-        </div>
+        </h3>
+      </div>
 
-        <div class="category">
+      <span class="category-arrow">
+        ↗
+      </span>
+
+    </div>
+
+
+    <div class="category-card">
+
+      <div>
+        <h3>
           Events & Invitations
-        </div>
+        </h3>
+      </div>
 
-        <div class="category">
+      <span class="category-arrow">
+        ↗
+      </span>
+
+    </div>
+
+
+    <div class="category-card">
+
+      <div>
+        <h3>
           Planners & Workbooks
+        </h3>
+      </div>
+
+      <span class="category-arrow">
+        ↗
+      </span>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     TEMPLATE LIBRARY
+     ================================================== -->
+
+<section
+  class="section template-section"
+  id="templates"
+>
+
+  <div class="section-heading">
+
+    <p class="eyebrow">
+      THE COLLECTION
+    </p>
+
+    <h2 class="section-title">
+      Featured templates.
+    </h2>
+
+  </div>
+
+
+
+  <div class="template-grid">
+
+
+    <!-- TEMPLATE 1 -->
+
+    <article class="template-card">
+
+      <div class="template-preview">
+
+        <div class="template-art">
+
+          <div class="template-art-orb"></div>
+
+          <div class="template-art-title">
+
+            YOUR<br>
+            BRAND.
+
+          </div>
+
         </div>
 
       </div>
 
-    </section>
 
-  </main>
+      <div class="template-info">
+
+        <h3>
+          Modern Brand Kit
+        </h3>
+
+        <p>
+          Branding
+        </p>
+
+        <button
+          class="template-edit"
+          onclick="openEditor('Modern Brand Kit')"
+        >
+          Edit Template
+        </button>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- TEMPLATE 2 -->
+
+    <article class="template-card">
+
+      <div class="template-preview">
+
+        <div class="template-art">
+
+          <div
+            class="template-art-orb"
+            style="
+              background:
+              linear-gradient(
+                135deg,
+                #111,
+                #777
+              );
+            "
+          ></div>
+
+          <div class="template-art-title">
+
+            NEW<br>
+            DROP.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="template-info">
+
+        <h3>
+          Product Launch
+        </h3>
+
+        <p>
+          Marketing
+        </p>
+
+        <button
+          class="template-edit"
+          onclick="openEditor('Product Launch')"
+        >
+          Edit Template
+        </button>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- TEMPLATE 3 -->
+
+    <article class="template-card">
+
+      <div class="template-preview">
+
+        <div class="template-art">
+
+          <div
+            class="template-art-orb"
+            style="
+              background:
+              linear-gradient(
+                135deg,
+                #f3d5e7,
+                #d9c6ff
+              );
+            "
+          ></div>
+
+          <div class="template-art-title">
+
+            EVENT<br>
+            DETAILS.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="template-info">
+
+        <h3>
+          Luxury Event
+        </h3>
+
+        <p>
+          Events
+        </p>
+
+        <button
+          class="template-edit"
+          onclick="openEditor('Luxury Event')"
+        >
+          Edit Template
+        </button>
+
+      </div>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     PREMIUM BANNER
+     ================================================== -->
+
+<section
+  class="premium-banner"
+  id="about"
+>
+
+  <div>
+
+    <p class="eyebrow">
+      CREATIVE TEMPLATEZ CO
+    </p>
+
+    <h2>
+
+      Start with beautiful.<br>
+
+      <em>Finish with you.</em>
+
+    </h2>
+
+  </div>
+
+
+  <p>
+
+    A premium template platform built to
+    give creators and businesses beautiful
+    starting points — without limiting
+    their creativity.
+
+  </p>
+
+</section>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     EDITOR PLACEHOLDER
+     ================================================== -->
+
+<div
+  id="editor"
+  style="display:none;"
+>
+
+</div>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+     ================================================== -->
+
+<script>
+
+  function openEditor(templateName = "Untitled Design") {
+
+    alert(
+      templateName +
+      " editor coming next."
+    );
+
+  }
+
+</script>
+
 
 </body>
+
 </html>
 ```
