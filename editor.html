@@ -1,324 +1,577 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CreativeTemplatezCo Editor</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="styles.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
+<title>CreativeTemplatezCo Editor</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<link rel="stylesheet" href="styles.css">
 
-        body {
-            margin: 0;
-            background: #eeeae4;
-            color: #171717;
-            font-family: "DM Sans", sans-serif;
-            overflow: hidden;
-        }
+<link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet"
+>
 
-        .editor-header {
-            min-height: 64px;
-            background: #111111;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 12px 20px;
-        }
+<style>
 
-        .editor-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .editor-brand-mark {
-            width: 32px;
-            height: 32px;
-            border-radius: 9px;
-            background: linear-gradient(135deg, #ffffff, #b8b0a5);
-            color: #111111;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
+body {
+    margin: 0;
+    background: #eeeae4;
+    color: #171717;
+    font-family: "DM Sans", sans-serif;
+    overflow: hidden;
+}
 
-        .editor-brand-name {
-            font-size: 16px;
-        }
 
-        .editor-actions {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
+/* =========================
+   HEADER
+========================= */
 
-        .editor-button {
-            border: 1px solid #555555;
-            background: transparent;
-            color: white;
-            border-radius: 8px;
-            padding: 9px 13px;
-            cursor: pointer;
-            font-family: inherit;
-        }
+.editor-header {
+    min-height: 64px;
+    background: #111;
+    color: white;
 
-        .editor-button.primary {
-            background: white;
-            color: #111111;
-            border-color: white;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        .editor-layout {
-            height: calc(100vh - 64px);
-            display: grid;
-            grid-template-columns: 220px 1fr 250px;
-        }
+    gap: 15px;
+    padding: 12px 20px;
+}
 
-        .editor-sidebar {
-            background: #f8f6f2;
-            border-right: 1px solid #ddd8d0;
-            padding: 18px;
-            overflow-y: auto;
-        }
+.editor-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-        .editor-sidebar.right {
-            border-right: 0;
-            border-left: 1px solid #ddd8d0;
-        }
+    font-weight: 700;
+}
 
-        .sidebar-title {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            color: #77716a;
-        }
+.editor-brand-mark {
+    width: 32px;
+    height: 32px;
 
-        .tool-button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 8px;
-            border: 1px solid #ddd8d0;
-            background: white;
-            border-radius: 10px;
-            text-align: left;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
-        }
+    border-radius: 9px;
 
-        .tool-button:active {
-            transform: scale(0.98);
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #fff,
+            #b8b0a5
+        );
 
-        .tool-icon {
-            display: inline-block;
-            width: 25px;
-            font-weight: 700;
-        }
+    color: #111;
 
-        .property-group {
-            margin-bottom: 18px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .property-label {
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 7px;
-            color: #77716a;
-        }
+    font-weight: 800;
+}
 
-        .property-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d7d1c8;
-            border-radius: 8px;
-            background: white;
-            font-family: inherit;
-            font-size: 14px;
-        }
+.editor-brand-name {
+    font-size: 16px;
+}
 
-        .property-input:focus {
-            outline: 2px solid #6d5dfc;
-            outline-offset: 1px;
-        }
+.editor-actions {
+    display: flex;
+    gap: 7px;
 
-        .canvas-area {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 25px;
-            overflow: auto;
-            background:
-                radial-gradient(#d7d1c8 1px, transparent 1px);
-            background-size: 18px 18px;
-        }
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
 
-        .canvas-wrapper {
-            width: 700px;
-            height: 500px;
-            min-width: 700px;
-            min-height: 500px;
-            box-shadow: 0 20px 50px rgba(0,0,0,.12);
-        }
+.editor-button {
+    border: 1px solid #555;
 
-        .design-canvas {
-            position: relative;
-            width: 700px;
-            height: 500px;
-            background: white;
-            overflow: hidden;
-        }
+    background: transparent;
+    color: white;
 
-        .canvas-title {
-            position: absolute;
-            left: 80px;
-            top: 100px;
-            font-family: "Playfair Display", serif;
-            font-size: 52px;
-            font-weight: 600;
-            cursor: move;
-            user-select: none;
-        }
+    border-radius: 8px;
 
-        .canvas-subtitle {
-            position: absolute;
-            left: 85px;
-            top: 175px;
-            width: 360px;
-            font-size: 18px;
-            line-height: 1.6;
-            color: #66615b;
-            cursor: move;
-            user-select: none;
-        }
+    padding: 9px 13px;
 
-        .canvas-orb {
-            position: absolute;
-            right: 80px;
-            top: 90px;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #171717, #77716a);
-            cursor: move;
-            user-select: none;
-        }
+    cursor: pointer;
 
-        .canvas-badge {
-            position: absolute;
-            left: 85px;
-            bottom: 70px;
-            padding: 9px 15px;
-            border: 1px solid #222222;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: move;
-            user-select: none;
-        }
+    font-family: inherit;
+}
 
-        .selected {
-            outline: 2px solid #6d5dfc;
-            outline-offset: 3px;
-        }
+.editor-button.primary {
+    background: white;
+    color: #111;
 
-        .empty-selection {
-            color: #77716a;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+    border-color: white;
+}
 
-        .selected-label {
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
 
-        @media (max-width: 800px) {
+/* =========================
+   MAIN LAYOUT
+========================= */
 
-            body {
-                overflow: auto;
-            }
+.editor-layout {
+    height: calc(100vh - 64px);
 
-            .editor-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
+    display: grid;
 
-            .editor-actions {
-                justify-content: flex-start;
-            }
+    grid-template-columns:
+        220px
+        1fr
+        250px;
+}
 
-            .editor-layout {
-                height: auto;
-                min-height: calc(100vh - 120px);
-                display: flex;
-                flex-direction: column;
-            }
 
-            .editor-sidebar,
-            .editor-sidebar.right {
-                border: 0;
-                border-bottom: 1px solid #ddd8d0;
-            }
+/* =========================
+   SIDEBARS
+========================= */
 
-            .editor-sidebar {
-                padding: 12px;
-            }
+.editor-sidebar {
+    background: #f8f6f2;
 
-            .tool-button {
-                width: auto;
-                display: inline-block;
-                margin-right: 5px;
-            }
+    border-right:
+        1px solid #ddd8d0;
 
-            .canvas-area {
-                min-height: 560px;
-                overflow-x: auto;
-                justify-content: flex-start;
-            }
+    padding: 18px;
 
-            .editor-sidebar.right {
-                border-top: 1px solid #ddd8d0;
-            }
-        }
-    </style>
+    overflow-y: auto;
+}
+
+.editor-sidebar.right {
+    border-right: 0;
+
+    border-left:
+        1px solid #ddd8d0;
+}
+
+.sidebar-title {
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 12px;
+
+    color: #77716a;
+}
+
+
+/* =========================
+   TOOLS
+========================= */
+
+.tool-button {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 8px;
+
+    border:
+        1px solid #ddd8d0;
+
+    background: white;
+
+    border-radius: 10px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-weight: 600;
+}
+
+.tool-button:active {
+    transform: scale(.98);
+}
+
+.tool-icon {
+    display: inline-block;
+
+    width: 25px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   PROPERTIES
+========================= */
+
+.properties-empty {
+    text-align: center;
+
+    padding: 30px 10px;
+
+    color: #77716a;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.properties-controls {
+    display: none;
+}
+
+.properties-controls.active {
+    display: block;
+}
+
+.property-group {
+    margin-bottom: 18px;
+}
+
+.property-label {
+    font-size: 12px;
+
+    font-weight: 700;
+
+    margin-bottom: 7px;
+
+    color: #77716a;
+}
+
+.property-input {
+    width: 100%;
+
+    padding: 10px;
+
+    border:
+        1px solid #d7d1c8;
+
+    border-radius: 8px;
+
+    background: white;
+
+    font-family: inherit;
+
+    font-size: 14px;
+}
+
+.property-input:focus {
+    outline:
+        2px solid #6d5dfc;
+
+    outline-offset: 1px;
+}
+
+.edit-text-button {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 0;
+
+    background: #111;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.text-editor-box {
+    display: none;
+}
+
+.text-editor-box.active {
+    display: block;
+}
+
+.property-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+.property-actions button {
+    margin: 0;
+}
+
+
+/* =========================
+   CANVAS AREA
+========================= */
+
+.canvas-area {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    overflow: auto;
+
+    background:
+        radial-gradient(
+            #d7d1c8 1px,
+            transparent 1px
+        );
+
+    background-size: 18px 18px;
+}
+
+.canvas-wrapper {
+
+    width: 700px;
+    height: 500px;
+
+    min-width: 700px;
+    min-height: 500px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.12);
+}
+
+.design-canvas {
+
+    position: relative;
+
+    width: 700px;
+    height: 500px;
+
+    background: white;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   DESIGN ELEMENTS
+========================= */
+
+.canvas-title {
+
+    position: absolute;
+
+    left: 80px;
+    top: 100px;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 52px;
+
+    font-weight: 600;
+
+    cursor: move;
+
+    user-select: none;
+}
+
+.canvas-subtitle {
+
+    position: absolute;
+
+    left: 85px;
+    top: 175px;
+
+    width: 360px;
+
+    font-size: 18px;
+
+    line-height: 1.6;
+
+    color: #66615b;
+
+    cursor: move;
+
+    user-select: none;
+}
+
+.canvas-orb {
+
+    position: absolute;
+
+    right: 80px;
+    top: 90px;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #171717,
+            #77716a
+        );
+
+    cursor: move;
+
+    user-select: none;
+}
+
+.canvas-badge {
+
+    position: absolute;
+
+    left: 85px;
+    bottom: 70px;
+
+    padding: 9px 15px;
+
+    border:
+        1px solid #222;
+
+    border-radius: 100px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: move;
+
+    user-select: none;
+}
+
+
+/* =========================
+   SELECTION
+========================= */
+
+.selected {
+
+    outline:
+        2px solid #6d5dfc;
+
+    outline-offset: 3px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .editor-header {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .editor-actions {
+
+        justify-content: flex-start;
+    }
+
+    .editor-layout {
+
+        height: auto;
+
+        min-height:
+            calc(100vh - 120px);
+
+        display: flex;
+
+        flex-direction: column;
+    }
+
+    .editor-sidebar {
+
+        border-right: 0;
+
+        border-bottom:
+            1px solid #ddd8d0;
+
+        padding: 12px;
+    }
+
+    .editor-sidebar.right {
+
+        border-left: 0;
+
+        border-top:
+            1px solid #ddd8d0;
+    }
+
+    .tool-button {
+
+        width: auto;
+
+        display: inline-block;
+
+        margin-right: 5px;
+    }
+
+    .canvas-area {
+
+        min-height: 560px;
+
+        overflow-x: auto;
+
+        justify-content: flex-start;
+    }
+}
+
+</style>
+
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header class="editor-header">
 
     <div class="editor-brand">
-        <div class="editor-brand-mark">C</div>
+
+        <div class="editor-brand-mark">
+            C
+        </div>
+
         <div class="editor-brand-name">
             CreativeTemplatezCo
         </div>
+
     </div>
+
 
     <div class="editor-actions">
 
         <button
             class="editor-button"
-            onclick="window.location.href='index.html'"
+            onclick="exitEditor()"
         >
             Exit
         </button>
@@ -349,145 +602,270 @@
 </header>
 
 
+<!-- =========================
+     EDITOR
+========================= -->
+
 <div class="editor-layout">
 
 
-    <!-- LEFT TOOLBAR -->
+<!-- =========================
+     LEFT SIDEBAR
+========================= -->
 
-    <aside class="editor-sidebar">
+<aside class="editor-sidebar">
 
-        <div class="sidebar-title">
-            Elements
-        </div>
+    <div class="sidebar-title">
+        Elements
+    </div>
 
-        <button
-            class="tool-button"
-            onclick="addText()"
-        >
-            <span class="tool-icon">T</span>
-            Text
-        </button>
 
-        <button
-            class="tool-button"
-            onclick="addShape()"
-        >
-            <span class="tool-icon">○</span>
-            Shape
-        </button>
+    <button
+        class="tool-button"
+        onclick="addText()"
+    >
+        <span class="tool-icon">T</span>
+        Text
+    </button>
 
-        <button
-            class="tool-button"
-            onclick="changeBackground()"
-        >
-            <span class="tool-icon">◐</span>
-            Background
-        </button>
 
+    <button
+        class="tool-button"
+        onclick="addShape()"
+    >
+        <span class="tool-icon">○</span>
+        Shape
+    </button>
+
+
+    <button
+        class="tool-button"
+        onclick="changeBackground()"
+    >
+        <span class="tool-icon">◐</span>
+        Background
+    </button>
+
+
+    <div
+        class="sidebar-title"
+        style="margin-top:25px;"
+    >
+        Templates
+    </div>
+
+
+    <button
+        class="tool-button"
+        onclick="loadTemplate('brand')"
+    >
+        Modern Brand
+    </button>
+
+
+    <button
+        class="tool-button"
+        onclick="loadTemplate('marketing')"
+    >
+        Product Launch
+    </button>
+
+
+    <button
+        class="tool-button"
+        onclick="loadTemplate('event')"
+    >
+        Luxury Event
+    </button>
+
+</aside>
+
+
+<!-- =========================
+     CANVAS
+========================= -->
+
+<main class="canvas-area">
+
+    <div class="canvas-wrapper">
 
         <div
-            class="sidebar-title"
-            style="margin-top:25px;"
+            id="designCanvas"
+            class="design-canvas"
         >
-            Templates
-        </div>
 
-
-        <button
-            class="tool-button"
-            onclick="loadTemplate('brand')"
-        >
-            Modern Brand
-        </button>
-
-        <button
-            class="tool-button"
-            onclick="loadTemplate('marketing')"
-        >
-            Product Launch
-        </button>
-
-        <button
-            class="tool-button"
-            onclick="loadTemplate('event')"
-        >
-            Luxury Event
-        </button>
-
-    </aside>
-
-
-    <!-- CANVAS -->
-
-    <main class="canvas-area">
-
-        <div class="canvas-wrapper">
 
             <div
-                id="designCanvas"
-                class="design-canvas"
+                id="canvasTitle"
+                class="canvas-title"
+                style="
+                    left:80px;
+                    top:100px;
+                "
+            >
+                Your Brand
+            </div>
+
+
+            <div
+                id="canvasSubtitle"
+                class="canvas-subtitle"
+                style="
+                    left:85px;
+                    top:175px;
+                "
+            >
+                Create something beautiful with CreativeTemplatezCo.
+            </div>
+
+
+            <div
+                id="canvasOrb"
+                class="canvas-orb"
+            ></div>
+
+
+            <div
+                id="canvasBadge"
+                class="canvas-badge"
+            >
+                CREATIVE TEMPLATE
+            </div>
+
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     RIGHT SIDEBAR
+========================= -->
+
+<aside class="editor-sidebar right">
+
+    <div class="sidebar-title">
+        Properties
+    </div>
+
+
+    <!-- NOTHING SELECTED -->
+
+    <div
+        id="propertiesEmpty"
+        class="properties-empty"
+    >
+        Select an element to edit it.
+    </div>
+
+
+    <!-- SOMETHING SELECTED -->
+
+    <div
+        id="propertiesControls"
+        class="properties-controls"
+    >
+
+
+        <div class="property-group">
+
+            <div class="property-label">
+                Selected Element
+            </div>
+
+            <button
+                id="editTextButton"
+                class="edit-text-button"
+                onclick="openTextEditor()"
+            >
+                Edit Text
+            </button>
+
+        </div>
+
+
+        <!-- TEXT EDITOR -->
+
+        <div
+            id="textEditorBox"
+            class="text-editor-box"
+        >
+
+            <div class="property-group">
+
+                <div class="property-label">
+                    Text
+                </div>
+
+                <textarea
+                    id="textEditor"
+                    class="property-input"
+                    rows="5"
+                    placeholder="Enter your text..."
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- FONT SIZE -->
+
+        <div class="property-group">
+
+            <div class="property-label">
+                Font Size
+            </div>
+
+            <input
+                id="fontSizeEditor"
+                class="property-input"
+                type="number"
+                min="8"
+                max="150"
             >
 
-                <div
-                    id="canvasTitle"
-                    class="canvas-title"
-                    style="left:80px; top:100px;"
-                >
-                    Your Brand
-                </div>
+        </div>
 
 
-                <div
-                    id="canvasSubtitle"
-                    class="canvas-subtitle"
-                    style="left:85px; top:175px;"
-                >
-                    Create something beautiful with CreativeTemplatezCo.
-                </div>
+        <!-- ACTIONS -->
+
+        <div class="property-actions">
+
+            <button
+                class="tool-button"
+                onclick="duplicateElement()"
+            >
+                Duplicate
+            </button>
 
 
-                <div
-                    id="canvasOrb"
-                    class="canvas-orb"
-                ></div>
-
-
-                <div
-                    id="canvasBadge"
-                    class="canvas-badge"
-                >
-                    CREATIVE TEMPLATE
-                </div>
-
-            </div>
+            <button
+                class="tool-button"
+                onclick="deleteElement()"
+            >
+                Delete
+            </button>
 
         </div>
 
-    </main>
 
+    </div>
 
-    <!-- RIGHT PROPERTIES -->
+</aside>
 
-    <aside class="editor-sidebar right">
-
-        <div class="sidebar-title">
-            Properties
-        </div>
-
-        <div id="propertyPanel">
-
-            <div class="empty-selection">
-                Select an element to edit it.
-            </div>
-
-        </div>
-
-    </aside>
 
 </div>
 
 
 <script>
+
+
+/* =========================
+   VARIABLES
+========================= */
 
 let selectedElement = null;
 
@@ -508,10 +886,67 @@ const canvas =
     );
 
 
-const propertyPanel =
+const propertiesEmpty =
     document.getElementById(
-        "propertyPanel"
+        "propertiesEmpty"
     );
+
+
+const propertiesControls =
+    document.getElementById(
+        "propertiesControls"
+    );
+
+
+const textEditorBox =
+    document.getElementById(
+        "textEditorBox"
+    );
+
+
+const textEditor =
+    document.getElementById(
+        "textEditor"
+    );
+
+
+const fontSizeEditor =
+    document.getElementById(
+        "fontSizeEditor"
+    );
+
+
+/* =========================
+   DESELECT
+========================= */
+
+function deselectElement() {
+
+    if (selectedElement) {
+
+        selectedElement.classList.remove(
+            "selected"
+        );
+
+    }
+
+
+    selectedElement = null;
+
+
+    propertiesEmpty.style.display =
+        "block";
+
+
+    propertiesControls.classList.remove(
+        "active"
+    );
+
+
+    textEditorBox.classList.remove(
+        "active"
+    );
+}
 
 
 /* =========================
@@ -520,12 +955,11 @@ const propertyPanel =
 
 function selectElement(element) {
 
-    if (!element) {
-        return;
-    }
+    if (!element) return;
 
 
-    selectedElement = element;
+    selectedElement =
+        element;
 
 
     document
@@ -546,208 +980,116 @@ function selectElement(element) {
     );
 
 
-    showProperties(
-        element
+    propertiesEmpty.style.display =
+        "none";
+
+
+    propertiesControls.classList.add(
+        "active"
     );
-}
 
 
-/* =========================
-   PROPERTIES PANEL
-========================= */
-
-function showProperties(element) {
-
-    if (!element) {
-
-        propertyPanel.innerHTML = `
-            <div class="empty-selection">
-                Select an element to edit it.
-            </div>
-        `;
-
-        return;
-    }
+    textEditorBox.classList.remove(
+        "active"
+    );
 
 
-    const currentText =
+    textEditor.value =
         element.innerText || "";
 
 
-    const currentFontSize =
+    fontSizeEditor.value =
         parseInt(
             getComputedStyle(
                 element
             ).fontSize
         ) || 20;
+}
 
 
-    propertyPanel.innerHTML = `
+/* =========================
+   OPEN TEXT EDITOR
+========================= */
 
-        <div class="selected-label">
-            Selected Element
-        </div>
+function openTextEditor() {
 
-
-        <div class="property-group">
-
-            <div class="property-label">
-                Text
-            </div>
-
-            <textarea
-                id="textEditor"
-                class="property-input"
-                rows="5"
-                placeholder="Enter your text..."
-            ></textarea>
-
-        </div>
+    if (!selectedElement) {
+        return;
+    }
 
 
-        <div class="property-group">
-
-            <div class="property-label">
-                Font Size
-            </div>
-
-            <input
-                id="fontSizeEditor"
-                class="property-input"
-                type="number"
-                min="8"
-                max="150"
-                value="${currentFontSize}"
-            >
-
-        </div>
-
-
-        <div class="property-group">
-
-            <button
-                id="duplicateButton"
-                class="tool-button"
-            >
-                Duplicate
-            </button>
-
-            <button
-                id="deleteButton"
-                class="tool-button"
-            >
-                Delete
-            </button>
-
-        </div>
-
-    `;
-
-
-    const textEditor =
-        document.getElementById(
-            "textEditor"
-        );
-
-
-    const fontSizeEditor =
-        document.getElementById(
-            "fontSizeEditor"
-        );
-
-
-    const duplicateButton =
-        document.getElementById(
-            "duplicateButton"
-        );
-
-
-    const deleteButton =
-        document.getElementById(
-            "deleteButton"
-        );
+    textEditorBox.classList.add(
+        "active"
+    );
 
 
     textEditor.value =
-        currentText;
+        selectedElement.innerText || "";
 
 
-    textEditor.addEventListener(
-        "input",
-        function() {
+    textEditor.focus();
 
-            if (!selectedElement) {
-                return;
-            }
-
-
-            selectedElement.innerText =
-                textEditor.value;
-
-        }
-    );
-
-
-    textEditor.addEventListener(
-        "change",
-        function() {
-
-            saveHistory();
-
-        }
-    );
-
-
-    fontSizeEditor.addEventListener(
-        "input",
-        function() {
-
-            if (!selectedElement) {
-                return;
-            }
-
-
-            selectedElement.style.fontSize =
-                fontSizeEditor.value +
-                "px";
-
-        }
-    );
-
-
-    fontSizeEditor.addEventListener(
-        "change",
-        function() {
-
-            saveHistory();
-
-        }
-    );
-
-
-    duplicateButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.stopPropagation();
-
-            duplicateElement();
-
-        }
-    );
-
-
-    deleteButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.stopPropagation();
-
-            deleteElement();
-
-        }
-    );
 }
+
+
+/* =========================
+   TEXT EDITING
+========================= */
+
+textEditor.addEventListener(
+    "input",
+    function() {
+
+        if (!selectedElement) {
+            return;
+        }
+
+
+        selectedElement.innerText =
+            textEditor.value;
+
+    }
+);
+
+
+textEditor.addEventListener(
+    "change",
+    function() {
+
+        saveHistory();
+
+    }
+);
+
+
+/* =========================
+   FONT SIZE
+========================= */
+
+fontSizeEditor.addEventListener(
+    "input",
+    function() {
+
+        if (!selectedElement) {
+            return;
+        }
+
+
+        selectedElement.style.fontSize =
+            fontSizeEditor.value + "px";
+
+    }
+);
+
+
+fontSizeEditor.addEventListener(
+    "change",
+    function() {
+
+        saveHistory();
+
+    }
+);
 
 
 /* =========================
@@ -786,14 +1128,6 @@ function addText() {
         "DM Sans, sans-serif";
 
 
-    text.style.cursor =
-        "move";
-
-
-    text.style.userSelect =
-        "none";
-
-
     canvas.appendChild(
         text
     );
@@ -810,6 +1144,9 @@ function addText() {
 
 
     saveHistory();
+
+
+    openTextEditor();
 }
 
 
@@ -853,10 +1190,6 @@ function addShape() {
         "20px";
 
 
-    shape.style.cursor =
-        "move";
-
-
     canvas.appendChild(
         shape
     );
@@ -877,7 +1210,7 @@ function addShape() {
 
 
 /* =========================
-   EDITABLE
+   MAKE EDITABLE
 ========================= */
 
 function makeEditable(element) {
@@ -1197,15 +1530,7 @@ function deleteElement() {
     selectedElement.remove();
 
 
-    selectedElement =
-        null;
-
-
-    propertyPanel.innerHTML = `
-        <div class="empty-selection">
-            Select an element to edit it.
-        </div>
-    `;
+    deselectElement();
 
 
     saveHistory();
@@ -1315,6 +1640,17 @@ function saveDesign() {
 
 
 /* =========================
+   EXIT
+========================= */
+
+function exitEditor() {
+
+    window.location.href =
+        "index.html";
+}
+
+
+/* =========================
    HISTORY
 ========================= */
 
@@ -1378,15 +1714,7 @@ function restoreHistory() {
         ];
 
 
-    selectedElement =
-        null;
-
-
-    propertyPanel.innerHTML = `
-        <div class="empty-selection">
-            Select an element to edit it.
-        </div>
-    `;
+    deselectElement();
 
 
     initialiseCanvas();
@@ -1398,6 +1726,7 @@ function restoreHistory() {
 ========================= */
 
 function loadTemplate(type) {
+
 
     if (type === "brand") {
 
@@ -1504,6 +1833,8 @@ function loadTemplate(type) {
 
     initialiseCanvas();
 
+    deselectElement();
+
     saveHistory();
 }
 
@@ -1529,21 +1860,37 @@ function initialiseCanvas() {
 
 
 /* =========================
+   CANVAS CLICK
+========================= */
+
+canvas.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === canvas
+        ) {
+
+            deselectElement();
+
+        }
+
+    }
+);
+
+
+/* =========================
    START
 ========================= */
 
-propertyPanel.innerHTML = `
-    <div class="empty-selection">
-        Select an element to edit it.
-    </div>
-`;
-
+deselectElement();
 
 initialiseCanvas();
 
 saveHistory();
 
 </script>
+
 
 </body>
 </html>
